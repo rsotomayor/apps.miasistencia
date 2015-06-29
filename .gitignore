@@ -1,0 +1,8 @@
+tmp/
+upload_backup/
+upload_log/
+upload_svt/
+upload_solem/
+outbox_solem/
+data
+download
