@@ -1,0 +1,52 @@
+<definitions name="registraEventoService"
+   targetNamespace="http://apps.miasistencia.cl/apps/src/s-caac/ws/registraevento.wsdl"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns="http://apps.miasistencia.cl/apps/src/s-caac/ws/registraevento.wsdl"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ 
+   <message name="registraEventoRequest">
+      <part name="evento" type="xsd:string"/>
+   </message>
+	
+   <message name="registraEventoResponse">
+      <part name="retval" type="xsd:string"/>
+   </message>
+
+   <portType name="registraEvento_PortType">
+      <operation name="registraEvento">
+         <input message="tns:registraEventoRequest"/>
+         <output message="tns:registraEventoResponse"/>
+      </operation>
+   </portType>
+
+   <binding name="registraEvento_Binding" type="tns:registraEvento_PortType">
+      <soap:binding style="rpc"
+         transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="registraEvento">
+         <soap:operation soapAction="registraEvento"/>
+         <input>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="urn:examples:registraEventoservice"
+               use="encoded"/>
+         </input>
+		
+         <output>
+            <soap:body
+               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               namespace="urn:examples:registraEventoservice"
+               use="encoded"/>
+         </output>
+      </operation>
+   </binding>
+
+   <service name="registraEvento_Service">
+      <documentation>WSDL File for registraEvento_Service</documentation>
+      <port binding="tns:registraEvento_Binding" name="RegistraEvento_Port">
+         <soap:address
+            location="http://apps.miasistencia.cl/apps/src/s-caac/ws/registraevento.php" />
+      </port>
+   </service>
+</definitions>
+
