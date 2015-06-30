@@ -3,8 +3,14 @@
 
 function registraEvento($xmldata_p) {
   $fo = fopen("/tmp/registraevento.log","a+");
-  fputs ($fo,$xmldata_p);
+
+  $xml=simplexml_load_file($xmldata_p);
+  foreach ( $xml as $key => $valor ) {
+    $data = "KEY $key  VALOR $valor";
+    fputs($fo,$data);
+  }
   fclose($fo);
+
   return 0;
 }
 
