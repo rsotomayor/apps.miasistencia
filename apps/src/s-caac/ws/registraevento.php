@@ -74,6 +74,7 @@ function getRegistroByModulo($idmodulo_p) {
 
 function registraAcceso($record_p) {
   global $link_g;
+  $retval = 0 ;
   date_default_timezone_set('UTC');
 
   $ipaddress       = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL ;
@@ -175,10 +176,16 @@ function registraAcceso($record_p) {
   try {
     $rs = $link_g->Execute($sqlString);
   } catch (exception $e) { 
-    return -1;
+    $flagmail = false ;
+    $pos = strpos($e->msg, 'Duplicate entry');
+    if ($pos === false) {
+      $retval = -1 ;
+    } else {
+      $retval = 1 ;
+    }
   }
 
-  return 0;
+  return $retval;
 
 
 
@@ -249,7 +256,9 @@ function registraEvento($xmldata_p) {
   }
 
   $record['tablename'] = $idcliente.'_db.stk_registroeventos';
-  if (registraAcceso($record) != 0 ) {
+
+  $retcode = registraAcceso($record) ;
+  if ( !( $retcode == 0 || $retcode == 1 ) ) {
     return 4;
   }
 
