@@ -6,7 +6,7 @@ function registraEvento($xmldata_p) {
 
   $xml=simplexml_load_string($xmldata_p);
   foreach ( $xml as $key => $valor ) {
-    $data = "KEY $key  VALOR $valor";
+    $data = "KEY $key  VALOR $valor\n";
     fputs($fo,$data);
   }
   fclose($fo);
