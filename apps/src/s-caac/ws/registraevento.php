@@ -2,9 +2,10 @@
 
 
 function registraEvento($xmldata_p) {
-
-  return -3;
-
+  $fo = fopen("/tmp/registraevento.log","+a");
+  fputs ($fo,$xmldata_p);
+  fclose($fo);
+  return 0;
 }
 
 
