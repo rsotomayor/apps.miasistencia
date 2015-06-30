@@ -201,10 +201,13 @@ function registraEvento($xmldata_p) {
 
   $xml = simplexml_load_string($xmldata_p);
 
+  $fo = fopen("/tmp/registraevento.log","a+");
   foreach ( $xml as $key => $valor ) {
+    $data = "KEY $key VALOR $valor\n";
+    fputs($fo,$data);
     $record[$key] = $valor ;
   }
-
+  fclose($fo);
 
 
   switch ( $record['idevento'] ) {
@@ -224,7 +227,6 @@ function registraEvento($xmldata_p) {
    case 'P':
       $record['idevento']        = 'REPORT.POSICION' ;
       break;
-
     default:
       break;
   }
