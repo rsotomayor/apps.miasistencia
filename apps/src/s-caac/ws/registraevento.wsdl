@@ -10,7 +10,7 @@
    </message>
 	
    <message name="registraEventoResponse">
-      <part name="retval" type="xsd:string"/>
+      <part name="retval" type="xsd:int"/>
    </message>
 
    <portType name="registraEvento_PortType">
