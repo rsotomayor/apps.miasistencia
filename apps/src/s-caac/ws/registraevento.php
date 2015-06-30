@@ -3,7 +3,7 @@
 
 function registraEvento($xmldata_p) {
 
-  return $xmldata_p;
+  return -3;
 
 }
 
