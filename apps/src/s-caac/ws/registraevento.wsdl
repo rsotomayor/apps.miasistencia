@@ -6,7 +6,7 @@
    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
  
    <message name="registraEventoRequest">
-      <part name="evento" type="xsd:string"/>
+      <part name="xmlevento" type="xsd:string"/>
    </message>
 	
    <message name="registraEventoResponse">
