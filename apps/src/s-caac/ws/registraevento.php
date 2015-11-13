@@ -85,8 +85,10 @@ function registraAcceso($record_p) {
   $fechahoraserver = strftime('%Y-%m-%d %H:%M:%S',time());
 
   $fechahora       = isset($record_p['fechahora'])   ? $record_p['fechahora'] : NULL ;  ;
+  $ts              = ($fechahora != NULL ) ? strtotime($fechahora) : time();
 
-  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
+//  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
+  $tsgps           = $ts ;
   $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
 
   $idacceso        = isset($record_p['idacceso'])        ? $record_p['idacceso'] : NULL ;
