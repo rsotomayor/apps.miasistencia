@@ -4,21 +4,32 @@
 
 
   $evento = "<?xml version='1.0'?> 
-<document>
- <title>¿Cuarenta qué?</title>
- <from>Joe</from>
- <to>Jane</to>
- <body>
-  Sé que esa es la respuesta pero, ¿cuál es la pregunta?
- </body>
-</document>" ;
-
+<marca>
+<idusuario>90500627</idusuario>
+<fechahora>2015-06-30 17:16:12</fechahora>
+<idfinger>-1</idfinger>
+<idgroup>0</idgroup>
+<idevento>A</idevento>
+<idusuariosesion>NA</idusuariosesion>
+<idacceso>00D069495C8E</idacceso>
+<idio>S</idio>
+<idtipoevento>RUT.MANUAL</idtipoevento>
+<idresultado>KO.BLKLST</idresultado>
+<score>0</score>
+<fix>65538</fix>
+<tsgps>0.000000</tsgps>
+<latitud>-33.028978</latitud>
+<longitud>-71.580785</longitud>
+<altura>100.000000</altura>
+<rumbo>0.000000</rumbo>
+<velocidad>0.000000</velocidad>
+<flagenviado>0</flagenviado>
+</marca>
+" ;
 
   $return = $client->registraEvento($evento);
 
   echo $return.'<br />';
-    
-
 
 
 ?>
