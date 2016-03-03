@@ -50,7 +50,14 @@ class Servicios {
   }
 
   function testServer($record_p) {
-    $response  = "TEST OK";
+
+
+    $fp = fopen('/tmp/ma.log', 'a');
+    fwrite($fp, print_r($record_p, TRUE));
+    fclose($fp);
+
+
+    $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
     $xml .= '<response>OK</response>';  
