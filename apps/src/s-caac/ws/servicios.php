@@ -50,7 +50,7 @@ class Servicios {
   }
 
   function testServer($record_p) {
-    $response  = "TEST OK";
+    $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
     $xml .= '<response>OK</response>';  
