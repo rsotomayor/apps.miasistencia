@@ -53,7 +53,7 @@ class Servicios {
 
 
     $fp = fopen('/tmp/ma.log', 'a');
-    fwrite($fp, print_r($array, TRUE));
+    fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
 
