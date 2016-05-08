@@ -295,9 +295,19 @@ function registraEvento($xmldata_p) {
   return $retval;;
 }
 
+if ( isset($_POST['wsname']) ) {
+  $wsname = $_POST['wsname'] ;
+} else if ( $_GET['wsname'] ) {
+  $wsname = $_GET['wsname'] ;  
+} else {
+  $wsname = NULL ;  
+}
 
-ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
-$server = new SoapServer("registraevento.wsdl");
-$server->addFunction("registraEvento");
-$server->handle();
+if ( $wsname == NULL ) {
+  ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
+  $server = new SoapServer("registraevento.wsdl");
+  $server->addFunction("registraEvento");
+  $server->handle();
+}
+
 ?>
