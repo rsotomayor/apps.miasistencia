@@ -229,7 +229,7 @@ function registraEvento($xmldata_p) {
 
   switch ( $record['idevento'] ) {
     case 'A':
-      $record['idevento']       = 'IDENTIFICA.RUT' ;
+      $record['idevento']       = 'REPORT.ACCESO' ;
       $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       break;
     case 'I':
@@ -313,7 +313,6 @@ function registraEvento($xmldata_p) {
 
 function registraMarca($record_p) {
   $retval = 0;
-    return -2;
 
   $idacceso = NULL;
   
@@ -336,7 +335,7 @@ function registraMarca($record_p) {
 
   switch ( $record['idevento'] ) {
     case 'A':
-      $record['idevento']       = 'IDENTIFICA.RUT' ;
+      $record['idevento']       = 'REPORT.ACCESO' ;
       $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       break;
     case 'I':
