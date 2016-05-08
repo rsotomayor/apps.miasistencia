@@ -302,7 +302,7 @@ function registraMarca($record_p) {
 
   $idacceso = NULL;
   
-  $xmldata = $record_p['xmldata']);
+  $xmldata = $record_p['xmldata'];
 
   $xml = simplexml_load_string($xmldata);
 
