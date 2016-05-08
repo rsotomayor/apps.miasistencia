@@ -211,7 +211,7 @@ class Servicios {
 
 
   function registraMarca($record_p) {
-    require_once ("registraevento.php");
+    //~ require_once ("registraevento.php");
 
     $fp = fopen('/tmp/ma.log', 'a');
     fwrite($fp, print_r($record_p, TRUE));
