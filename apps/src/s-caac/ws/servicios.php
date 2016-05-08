@@ -215,6 +215,7 @@ class Servicios {
 
     $fp = fopen('/tmp/ma.log', 'a');
     fwrite($fp, print_r($record_p, TRUE));
+    fwrite($fp,"registrando Marca\n");    
     fclose($fp);
 
     registraEvento($record_p['xmldata']);
