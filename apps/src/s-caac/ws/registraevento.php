@@ -321,13 +321,13 @@ function registraMarca($record_p) {
 
   $xml = simplexml_load_string($xmldata);
 
-  $fo = fopen("/tmp/registramarca.log","a+");
-  foreach ( $xml as $key => $valor ) {
-    $data = "KEY $key VALOR $valor\n";
-    fputs($fo,$data);
-    $record[$key] = $valor ;
-  }
-  fclose($fo);
+  //~ $fo = fopen("/tmp/registramarca.log","a+");
+  //~ foreach ( $xml as $key => $valor ) {
+    //~ $data = "KEY $key VALOR $valor\n";
+    //~ fputs($fo,$data);
+    //~ $record[$key] = $valor ;
+  //~ }
+  //~ fclose($fo);
 
 
   switch ( $record['idevento'] ) {
@@ -356,10 +356,10 @@ function registraMarca($record_p) {
   $record['idmodulo'] = isset($record['idmodulo']) ? $record['idmodulo'] : $idacceso ;
   $record['idmovil']  = isset($record['idmovil']) ? $record['idmovil'] : $idacceso ;
 
-  $fo = fopen("/tmp/registramarca.log","a+");
-  $data = "IDACCESO $idacceso\n";
-  fputs($fo,$data);
-  fclose($fo);
+  //~ $fo = fopen("/tmp/registramarca.log","a+");
+  //~ $data = "IDACCESO $idacceso\n";
+  //~ fputs($fo,$data);
+  //~ fclose($fo);
 
   if ( $idacceso == NULL ) {
     return 1;

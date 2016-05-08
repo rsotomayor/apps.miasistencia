@@ -213,14 +213,22 @@ class Servicios {
   function registraMarca($record_p) {
     require_once ("registraevento.php");
 
-    $fp = fopen('/tmp/ma.log', 'a');
-    fwrite($fp, print_r($record_p, TRUE));
-    fwrite($fp,"registrando Marca\n");    
-    fclose($fp);
+    //~ $fp = fopen('/tmp/ma.log', 'a');
+    //~ fwrite($fp, print_r($record_p, TRUE));
+    //~ fwrite($fp,"registrando Marca\n");    
+    //~ fclose($fp);
 
-    registraMarca($record_p);
+    $retval = registraMarca($record_p);
 
-    $response = 'OK' ;
+    if ( $retval == 0 ) {
+      $response = 'OK' ;
+    } else {
+      $response = 'KO.REGISTRO'  
+    }
+
+    $response = 'KO.REGISTRO'  
+
+    
     $description = NULL ;
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
