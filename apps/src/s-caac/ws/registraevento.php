@@ -313,7 +313,7 @@ function registraEvento($xmldata_p) {
 
 function registraMarca($record_p) {
   $retval = 0;
-
+    return -2;
 
   $idacceso = NULL;
   

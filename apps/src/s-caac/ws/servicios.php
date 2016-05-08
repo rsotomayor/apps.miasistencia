@@ -226,7 +226,6 @@ class Servicios {
       $response = 'KO.REGISTRO'  ;
     }
 
-    $response = 'KO.REGISTRO'  ;
 
     
     $description = NULL ;
