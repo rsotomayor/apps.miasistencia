@@ -199,19 +199,24 @@ function registraEvento($xmldata_p) {
   $retval = 0;
 
 
-  $idacceso = NULL;
+  //~ $idacceso = NULL;
 
-  $xml = simplexml_load_string($xmldata_p);
+  //~ $xml = simplexml_load_string($xmldata_p);
 
+  //~ $fo = fopen("/tmp/registraevento.log","a+");
+  //~ foreach ( $xml as $key => $valor ) {
+    //~ $data = "KEY $key VALOR $valor\n";
+    //~ fputs($fo,$data);
+    //~ $record[$key] = $valor ;
+  //~ }
+  //~ fclose($fo);
+  
   $fo = fopen("/tmp/registraevento.log","a+");
-  foreach ( $xml as $key => $valor ) {
-    $data = "KEY $key VALOR $valor\n";
-    fputs($fo,$data);
-    $record[$key] = $valor ;
-  }
-  fclose($fo);
-
-  return ;
+  fwrite($fp, print_r($xmldata_p, TRUE));
+  fclose($fp);
+  
+  return;
+    
 
   switch ( $record['idevento'] ) {
     case 'A':
