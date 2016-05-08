@@ -217,7 +217,7 @@ class Servicios {
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
-    registraEvento($record_p['xmldata']);
+    //~ registraEvento($record_p['xmldata']);
 
     $response = 'OK' ;
     $description = NULL ;
