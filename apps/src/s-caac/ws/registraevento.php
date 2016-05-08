@@ -214,8 +214,8 @@ function registraEvento($xmldata_p) {
 
   switch ( $record['idevento'] ) {
     case 'A':
-      $record['idevento']        = 'IDENTIFICA.RUT' ;
-      $record['idestado']         = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
+      $record['idevento']       = 'IDENTIFICA.RUT' ;
+      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       break;
     case 'I':
       $record['idevento']        = 'INICIO.VIAJE' ;
@@ -224,10 +224,10 @@ function registraEvento($xmldata_p) {
       $record['idevento']        = 'TERMINO.VIAJE' ;
       break;
     case 'S':
-      $record['idevento']        = 'REPORT.ESTADO' ;
+      $record['idevento']       = 'REPORT.ESTADO' ;
       break;
    case 'P':
-      $record['idevento']        = 'REPORT.POSICION' ;
+      $record['idevento']       = 'REPORT.POSICION' ;
       break;
     default:
       break;
