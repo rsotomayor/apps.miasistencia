@@ -217,6 +217,8 @@ class Servicios {
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
+    registraEvento($record['xmldata']);
+
     $response = 'OK' ;
     $description = NULL ;
     $xml  = '<?xml version="1.0"?>';
