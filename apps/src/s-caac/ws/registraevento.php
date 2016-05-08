@@ -211,6 +211,7 @@ function registraEvento($xmldata_p) {
   }
   fclose($fo);
 
+  return ;
 
   switch ( $record['idevento'] ) {
     case 'A':
