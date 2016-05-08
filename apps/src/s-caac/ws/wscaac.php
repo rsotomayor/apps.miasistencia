@@ -5,8 +5,15 @@
 
 require_once ("servicios.php");
 
-$myws = new Servicios();
+require_once ("configuration.php");
+set_include_path(get_include_path() . PATH_SEPARATOR . $cscwebPath_g);
+require_once ("dbconn.php");
+$dbconn_g    = new DBConn($dbConfig_g) ;
+$dbconn_g->connect();
+$link_g  = $dbconn_g->getConnection();
 
+
+$myws = new Servicios();
 
 $idwsname  = isset($_GET['wsname']) ? $_GET['wsname'] : NULL ;
 

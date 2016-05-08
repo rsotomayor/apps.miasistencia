@@ -1,12 +1,27 @@
 <?php
 
 
-require_once ("configuration.php");
-set_include_path(get_include_path() . PATH_SEPARATOR . $cscwebPath_g);
-require_once ("dbconn.php");
-$dbconn_g    = new DBConn($dbConfig_g) ;
-$dbconn_g->connect();
-$link_g  = $dbconn_g->getConnection();
+
+
+
+
+if ( isset($_POST['wsname']) ) {
+  $wsname = $_POST['wsname'] ;
+} else if ( $_GET['wsname'] ) {
+  $wsname = $_GET['wsname'] ;  
+} else {
+  $wsname = NULL ;  
+}
+
+if ( $wsname == NULL ) {
+  require_once ("configuration.php");
+  set_include_path(get_include_path() . PATH_SEPARATOR . $cscwebPath_g);
+  require_once ("dbconn.php");
+  $dbconn_g    = new DBConn($dbConfig_g) ;
+  $dbconn_g->connect();
+  $link_g  = $dbconn_g->getConnection();
+}
+
 
 function validaEntero($str_p ) {
   if ( ( strlen($str_p) == 0) || 
@@ -398,15 +413,6 @@ function registraMarca($record_p) {
   return $retval;;
 }
 
-
-
-if ( isset($_POST['wsname']) ) {
-  $wsname = $_POST['wsname'] ;
-} else if ( $_GET['wsname'] ) {
-  $wsname = $_GET['wsname'] ;  
-} else {
-  $wsname = NULL ;  
-}
 
 if ( $wsname == NULL ) {
   ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
