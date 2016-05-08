@@ -217,14 +217,15 @@ class Servicios {
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
-
-    $response  = "REGISTRA MARCA OK";
+    $response = 'OK' ;
+    $description = NULL ;
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
-    $xml .= '<response>OK</response>';  
-    $xml .= '<description>'.$response.'</description>';  
-    $xml .= '</result>'; 
-    return $xml;
+    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<description>'.$description.'</description>';  
+    $xml .= '</result>';    
+    return $xml;  
+    
   }
 
 
