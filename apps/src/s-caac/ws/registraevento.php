@@ -212,6 +212,8 @@ function registraEvento($xmldata_p) {
   //~ fclose($fo);
   
   $fo = fopen("/tmp/registraevento.log","a+");
+  
+  fwrite($fp,"registrando Evento\n");
   fwrite($fp, print_r($xmldata_p, TRUE));
   fclose($fp);
   
