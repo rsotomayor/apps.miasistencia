@@ -322,12 +322,16 @@ function registraMarca($record_p) {
   $xml = simplexml_load_string($xmldata);
 
   //~ $fo = fopen("/tmp/registramarca.log","a+");
-  //~ foreach ( $xml as $key => $valor ) {
-    //~ $data = "KEY $key VALOR $valor\n";
+  foreach ( $xml as $key => $valor ) {
+    $data = "KEY $key VALOR $valor\n";
     //~ fputs($fo,$data);
-    //~ $record[$key] = $valor ;
-  //~ }
+    $record[$key] = $valor ;
+  }
   //~ fclose($fo);
+
+  if ( !isset($record['idevento']) ) {
+    return -2;
+  }
 
 
   switch ( $record['idevento'] ) {
