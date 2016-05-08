@@ -218,7 +218,7 @@ class Servicios {
     fwrite($fp,"registrando Marca\n");    
     fclose($fp);
 
-    registraEvento($record_p['xmldata']);
+    registraMarca($record_p);
 
     $response = 'OK' ;
     $description = NULL ;
