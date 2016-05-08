@@ -223,10 +223,10 @@ class Servicios {
     if ( $retval == 0 ) {
       $response = 'OK' ;
     } else {
-      $response = 'KO.REGISTRO'  
+      $response = 'KO.REGISTRO'  ;
     }
 
-    $response = 'KO.REGISTRO'  
+    $response = 'KO.REGISTRO'  ;
 
     
     $description = NULL ;
