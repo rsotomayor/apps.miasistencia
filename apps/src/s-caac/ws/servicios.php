@@ -210,6 +210,24 @@ class Servicios {
   }
 
 
+  function registraMarca($record_p) {
+    require_once ("registraevento.php");
+
+    $fp = fopen('/tmp/ma.log', 'a');
+    fwrite($fp, print_r($record_p, TRUE));
+    fclose($fp);
+
+
+    $response  = "REGISTRA MARCA OK";
+    $xml  = '<?xml version="1.0"?>';
+    $xml .= '<result>';
+    $xml .= '<response>OK</response>';  
+    $xml .= '<description>'.$response.'</description>';  
+    $xml .= '</result>'; 
+    return $xml;
+  }
+
+
 } 
 
 
