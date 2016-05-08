@@ -20,7 +20,6 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-
 class Servicios {
   var $link_a ;
   var $id_a ;
@@ -50,12 +49,13 @@ class Servicios {
   }
 
   function testServer($record_p) {
-
+    require_once ("registraevento.php");
 
     $fp = fopen('/tmp/ma.log', 'a');
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
+    $record['
 
     $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';

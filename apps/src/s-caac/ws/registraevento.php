@@ -77,14 +77,14 @@ function registraAcceso($record_p) {
   $retval = 0 ;
   date_default_timezone_set('UTC');
 
-  $ipaddress       = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL ;
-  $idusuario       = isset($record_p['idusuario']) ? $record_p['idusuario'] : NULL;
+  $ipaddress       = isset($_SERVER['REMOTE_ADDR'])    ? $_SERVER['REMOTE_ADDR'] : NULL ;
+  $idusuario       = isset($record_p['idusuario'])     ? $record_p['idusuario'] : NULL;
   $idevento        = isset($record_p['idevento'])      ? $record_p['idevento'] : 'REPORT.ESTADO' ;
-  $idtipoevento    = isset($record_p['idtipoevento'])      ? $record_p['idtipoevento'] : NULL ;
+  $idtipoevento    = isset($record_p['idtipoevento'])  ? $record_p['idtipoevento'] : NULL ;
   $idincidente     = isset($record_p['idincidente'])   ? $record_p['idincidente'] : NULL ;  ;
   $fechahoraserver = strftime('%Y-%m-%d %H:%M:%S',time());
 
-  $fechahora       = isset($record_p['fechahora'])   ? $record_p['fechahora'] : NULL ;  ;
+  $fechahora       = isset($record_p['fechahora'])     ? $record_p['fechahora'] : NULL ;  ;
   $ts              = ($fechahora != NULL ) ? strtotime($fechahora) : time();
 
 //  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
@@ -218,10 +218,10 @@ function registraEvento($xmldata_p) {
       $record['idestado']         = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       break;
     case 'I':
-      $record['idevento']       = 'INICIO.VIAJE' ;
+      $record['idevento']        = 'INICIO.VIAJE' ;
       break;
     case 'T':
-      $record['idevento']       = 'TERMINO.VIAJE' ;
+      $record['idevento']        = 'TERMINO.VIAJE' ;
       break;
     case 'S':
       $record['idevento']        = 'REPORT.ESTADO' ;
