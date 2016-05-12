@@ -57,6 +57,12 @@ class Servicios {
     
     
     $idmodulo = isset($record_p['idmodulo']) ? $record_p['idmodulo'] : NULL;
+    $ts = isset($record_p['ts']) ? $record_p['ts'] : NULL;
+    
+    $record = $record_p;
+    if ( $ts != NULL ) {
+      $record['fechahora'] = strftime('%Y-%m-%d %H:%M:%S',strtotime($ts));
+    }
     
     $dummy = getRegistroByModulo($idmodulo);
     if ( $dummy == NULL ) {
