@@ -54,20 +54,39 @@ class Servicios {
     $fp = fopen('/tmp/ma.log', 'a');
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
-
-    $record['tablename'] = $idcliente.'_db.stk_registroeventos';
-
-    $retcode = registraAcceso($record) ;
-    if ( !( $retcode == 0 || $retcode == 1 ) ) {
-      $description = "TEST SERVER ERROR"; 
-      $response = "KO";
+    
+    global $idcliente_g;
+    
+    $idcliente = $idcliente;
+    
+    $idmodulo = isset($record_p['idmodulo']) ? $record_p['idmodulo'] : NULL;
+    
+    $dummy = getRegistroByModulo($idmodulo);
+    if ( $dummy == NULL ) {
+      $description = "TEST SERVER MODULO ERROR"; 
+      $response = "KO.IDMODULO";
     } else {
-      $description = "TEST SERVER OK"; 
-      $response = "OK";      
+      
+      $idcliente = $dummy['idcliente'];
+
+      if ( $idcliente == NULL ) {
+        $description = "TEST SERVER MODULO NULL ERROR"; 
+        $response = "KO.IDMODULO.NULL";
+      } else {
+        $record['tablename'] = $idcliente.'_db.stk_registroeventos';
+        $retcode = registraAcceso($record) ;
+
+        if ( !( $retcode == 0 || $retcode == 1 ) ) {
+          $description = "TEST SERVER ERROR"; 
+          $response = "KO";
+        } else {
+          $description = "TEST SERVER OK"; 
+          $response = "OK";      
+        }
+      }
+      
     }
 
-
-    $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
     $xml .= '<response>'.$response.'</response>';  
