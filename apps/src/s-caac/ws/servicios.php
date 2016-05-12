@@ -51,13 +51,10 @@ class Servicios {
   function testServer($record_p) {
     require_once ("registraevento.php");
 
-    $fp = fopen('/tmp/ma.log', 'a');
-    fwrite($fp, print_r($record_p, TRUE));
-    fclose($fp);
+    //~ $fp = fopen('/tmp/ma.log', 'a');
+    //~ fwrite($fp, print_r($record_p, TRUE));
+    //~ fclose($fp);
     
-    global $idcliente_g;
-    
-    $idcliente = $idcliente;
     
     $idmodulo = isset($record_p['idmodulo']) ? $record_p['idmodulo'] : NULL;
     
