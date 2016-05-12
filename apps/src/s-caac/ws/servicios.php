@@ -74,10 +74,10 @@ class Servicios {
         $retcode = registraAcceso($record) ;
 
         if ( !( $retcode == 0 || $retcode == 1 ) ) {
-          $description = "TEST SERVER ERROR"; 
+          $description = "TEST SERVER [".$idcliente."] ERROR"; 
           $response = "KO";
         } else {
-          $description = "TEST SERVER OK"; 
+          $description = "TEST SERVER [".$idcliente."] OK"; 
           $response = "OK";      
         }
       }
