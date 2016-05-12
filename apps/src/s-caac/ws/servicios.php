@@ -55,13 +55,23 @@ class Servicios {
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
-    registraAcceso($record_p);
+    $record['tablename'] = $idcliente.'_db.stk_registroeventos';
+
+    $retcode = registraAcceso($record) ;
+    if ( !( $retcode == 0 || $retcode == 1 ) ) {
+      $description = "TEST SERVER ERROR"; 
+      $response = "KO";
+    } else {
+      $description = "TEST SERVER OK"; 
+      $response = "OK";      
+    }
+
 
     $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
-    $xml .= '<response>OK</response>';  
-    $xml .= '<description>'.$response.'</description>';  
+    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<description>'.$description.'</description>';  
     $xml .= '</result>'; 
     return $xml;
   }
