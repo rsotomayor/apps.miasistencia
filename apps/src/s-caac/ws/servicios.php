@@ -61,7 +61,7 @@ class Servicios {
     
     $record = $record_p;
     if ( $ts != NULL ) {
-      $record['fechahora'] = strftime('%Y-%m-%d %H:%M:%S',strtotime($ts));
+      $record['fechahora'] = strftime('%Y-%m-%d %H:%M:%S',$ts);
     }
     
     $dummy = getRegistroByModulo($idmodulo);
