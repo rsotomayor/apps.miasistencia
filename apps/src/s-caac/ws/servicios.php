@@ -56,16 +56,6 @@ class Servicios {
     fclose($fp);
 
 
-    $retval = registraMarca($record_p);
-
-    if ( $retval == 0 ) {
-      $response = 'OK' ;
-    } else {
-      $response = 'KO.REGISTRO'  ;
-    }
-
-
-
     $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
@@ -228,7 +218,7 @@ class Servicios {
     //~ fwrite($fp,"registrando Marca\n");    
     //~ fclose($fp);
 
-    $retval = registraMarca($record_p);
+    $retval = registraEventoMarca($record_p);
 
     if ( $retval == 0 ) {
       $response = 'OK' ;

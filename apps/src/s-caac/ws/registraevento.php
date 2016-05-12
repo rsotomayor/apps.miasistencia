@@ -311,7 +311,7 @@ function registraEvento($xmldata_p) {
 }
 
 
-function registraMarca($record_p) {
+function registraEventoMarca($record_p) {
   $retval = 0;
 
   $idacceso = NULL;
