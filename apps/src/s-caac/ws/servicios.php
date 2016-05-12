@@ -55,6 +55,7 @@ class Servicios {
     fwrite($fp, print_r($record_p, TRUE));
     fclose($fp);
 
+    registraAcceso($record_p);
 
     $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
