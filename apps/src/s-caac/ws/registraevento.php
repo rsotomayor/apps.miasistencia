@@ -185,10 +185,10 @@ function registraAcceso($record_p) {
         ) ";
 
 
-#  $fo = fopen("/tmp/registraevento.log","a+");
-#  $data = "SQL $sqlString\n";
-#  fputs($fo,$data);
-#  fclose($fo);
+  $fo = fopen("/tmp/registraAcceso.log","a+");
+  $data = "SQL $sqlString\n";
+  fputs($fo,$data);
+  fclose($fo);
 
   try {
     $rs = $link_g->Execute($sqlString);
