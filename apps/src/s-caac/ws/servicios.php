@@ -56,6 +56,16 @@ class Servicios {
     fclose($fp);
 
 
+    $retval = registraMarca($record_p);
+
+    if ( $retval == 0 ) {
+      $response = 'OK' ;
+    } else {
+      $response = 'KO.REGISTRO'  ;
+    }
+
+
+
     $response  = "TEST SERVER OK";
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
