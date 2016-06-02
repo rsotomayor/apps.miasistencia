@@ -209,6 +209,7 @@ function registraAcceso($record_p) {
 
   if ( $idevento == 'REPORT.ESTADO' && $idtipoevento == 'TEST.SERVER' && $tablename_estadomodulo != NULL ) {
 
+    $modelo              = isset($record_p['modelo'])     ? $record_p['modelo'] : NULL ;
     $ntemplates          = isset($record_p['ntemplates']) ? $record_p['ntemplates'] : NULL ;
     $ntransacciones      = isset($record_p['ntransacciones']) ? $record_p['ntransacciones'] : NULL ;
     $nusuarios           = isset($record_p['nusuarios'])  ? $record_p['nusuarios'] : NULL ;
@@ -226,6 +227,7 @@ function registraAcceso($record_p) {
 
     $sqlString = "INSERT INTO $tablename_estadomodulo (
           id,
+          modelo,
           ntemplates,
           ntransacciones,
           nusuarios,
@@ -241,6 +243,7 @@ function registraAcceso($record_p) {
           tup)
           VALUES (
           '$id',
+          '$modelo',          
           '$ntemplates',
           '$ntransacciones',
           '$nusuarios',
