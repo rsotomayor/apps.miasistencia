@@ -129,7 +129,7 @@ function registraAcceso($record_p) {
     $temperature = NULL ;
     $degree = "F" ;
   }
-
+  $hash_sum        = isset($record_p['hash_sum'])        ? $record_p['hash_sum'] : NULL ;   
   $id              = sha1($idmodulo.'-'.$idevento.'-'.$idusuario.'-'.$idestado.'-'.$fechahora);
 
   $tablename       = $record_p['tablename'];
@@ -157,7 +157,8 @@ function registraAcceso($record_p) {
         idresultado,
         scorehuella,
         ipaddress,
-        nota) 
+        nota,
+        hash_sum) 
         VALUES (
         '$id',
         '$idevento',
@@ -181,7 +182,8 @@ function registraAcceso($record_p) {
         '$idresultado',
         '$scorehuella',
         '$ipaddress',
-        '$nota'
+        '$nota',
+        '$hash_sum'
         ) ";
 
 
