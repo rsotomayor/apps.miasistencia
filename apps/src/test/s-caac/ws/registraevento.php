@@ -297,6 +297,7 @@ function registraEvento($xmldata_p) {
   $xml = simplexml_load_string($xmldata_p);
 
   $fo = fopen("/tmp/registraevento.log","a+");
+  fputs($fo,"==================================================================");
   foreach ( $xml as $key => $valor ) {
     $data = "KEY $key VALOR $valor\n";
     fputs($fo,$data);
@@ -398,13 +399,14 @@ function registraEventoMarca($record_p) {
 
   $xml = simplexml_load_string($xmldata);
 
-  //~ $fo = fopen("/tmp/registramarca.log","a+");
+  $fo = fopen("/tmp/registramarca.log","a+");
+  fputs($fo,"==================================================================\n");
   foreach ( $xml as $key => $valor ) {
     $data = "KEY $key VALOR $valor\n";
-    //~ fputs($fo,$data);
+    fputs($fo,$data);
     $record[$key] = $valor ;
   }
-  //~ fclose($fo);
+  fclose($fo);
 
   if ( !isset($record['idevento']) ) {
     return -2;

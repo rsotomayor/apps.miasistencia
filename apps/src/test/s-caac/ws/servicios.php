@@ -248,17 +248,25 @@ class Servicios {
   function registraMarca($record_p) {
     require_once ("registraevento.php");
 
-    //~ $fp = fopen('/tmp/ma.log', 'a');
-    //~ fwrite($fp, print_r($record_p, TRUE));
-    //~ fwrite($fp,"registrando Marca\n");    
-    //~ fclose($fp);
+    $fp = fopen('/tmp/matest.log', 'a');
+    fwrite($fp, print_r($record_p, TRUE));
+    fwrite($fp,"registrando Marca\n");    
+    fclose($fp);
 
     $retval = registraEventoMarca($record_p);
 
     if ( $retval == 0 ) {
       $response = 'OK' ;
     } else {
-      $response = 'KO.REGISTRO'  ;
+      switch ( $retval ) {
+        case 1:
+          $response = 'KO.NULLACCESO';break;
+        case 2:
+          $response = 'KO.ACCESODENEGADO';break;
+        default:
+          $response = 'KO.REGISTRO'  ;
+          break;
+      }
     }
 
 
