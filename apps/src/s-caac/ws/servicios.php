@@ -256,7 +256,15 @@ class Servicios {
     if ( $retval == 0 ) {
       $response = 'OK' ;
     } else {
-      $response = 'KO.REGISTRO'  ;
+      switch ( $retval ) {
+        case 1:
+          $response = 'KO.NULLACCESO';break;
+        case 2:
+          $response = 'KO.ACCESODENEGADO';break;
+        default:
+          $response = 'KO.REGISTRO'  ;
+          break;
+      }
     }
 
 
