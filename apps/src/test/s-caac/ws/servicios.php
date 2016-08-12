@@ -244,6 +244,27 @@ class Servicios {
     return $xml;  
   }
 
+  function registraUsuario($record_p) {
+    require_once ("registraevento.php");
+
+    $fp = fopen('/tmp/matest.log', 'a');
+    fwrite($fp,"BEGIN ==> registrando Usuario\n");    
+    fwrite($fp, print_r($record_p, TRUE));
+    fwrite($fp,"END ==> registrando Usuario\n");    
+    fclose($fp);
+
+    $response    = 'OK' ;
+    $description = 'En desarrollo ('.strftime('%Y-%m-%d %H:%M:%S',time()).')' ;
+    $xml  = '<?xml version="1.0"?>';
+    $xml .= '<result>';
+    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<description>'.$description.'</description>';  
+    $xml .= '</result>';    
+    return $xml;  
+
+
+  }
+
 
   function registraMarca($record_p) {
     require_once ("registraevento.php");
