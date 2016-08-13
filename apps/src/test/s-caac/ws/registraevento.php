@@ -730,7 +730,7 @@ function registraEventoMarca(&$record_p) {
   
   $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
   $email      = $usuario_r['email'];
-  $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600)M
+  $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
   
   $record_p ['ticket']     = '---------- CONTROL ASISTENCIA ----------|' ;    
   $record_p ['ticket']    .= '*** TRABAJADOR ***|' ;    
