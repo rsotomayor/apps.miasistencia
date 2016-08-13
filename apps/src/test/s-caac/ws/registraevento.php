@@ -70,32 +70,28 @@ function enviaMail($usuarios_p,$subject_p,$mailBody_p,$issmtp_p=false) {
 
 
   if(!$mail->Send()) {
-    if (  isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-      echo 'Failed to send mail ....\n';
-    } else {
-      echo "<font color=\"#0000FF\"><b>Failed to send mail ....</b></font><br /> "  ;
-    }
+    //~ if (  isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
+      //~ echo 'Failed to send mail ....\n';
+    //~ } else {
+      //~ echo "<font color=\"#0000FF\"><b>Failed to send mail ....</b></font><br /> "  ;
+    //~ }
   } else {
-
-
-    if (  isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-      echo '<font color="#0000FF"><b> '   ;
-      if ( isset($email_r) ) {
-        foreach ( $email_r as $key => $value ) {
-          echo '['.$value.']' ;
-        }
-      }
-      echo '</b></font><br>'   ;
-    } else {
-      if ( isset($email_r) ) {
-        foreach ( $email_r as $key => $value ) {
-          echo '['.$value.']' ;
-        }
-      }
-      echo "\n"   ;
-    }
-    
-    
+    //~ if (  isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
+      //~ echo '<font color="#0000FF"><b> '   ;
+      //~ if ( isset($email_r) ) {
+        //~ foreach ( $email_r as $key => $value ) {
+          //~ echo '['.$value.']' ;
+        //~ }
+      //~ }
+      //~ echo '</b></font><br>'   ;
+    //~ } else {
+      //~ if ( isset($email_r) ) {
+        //~ foreach ( $email_r as $key => $value ) {
+          //~ echo '['.$value.']' ;
+        //~ }
+      //~ }
+      //~ echo "\n"   ;
+    //~ }
 
 
   }
@@ -748,7 +744,7 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
   $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
   
-  /*
+ 
   $usuarios_r[] = array(
                   "idusuario" => $usuario_r['rut'] ,
                   "to"        => "to" ,
@@ -760,7 +756,6 @@ function registraEventoMarca(&$record_p) {
   $mailBody = str_replace('|','<br />',$record_p['ticket']);
 
   enviaMail($usuarios_r,$subject,$mailBody);
-*/
 
   return $retval;;
 }
