@@ -363,7 +363,7 @@ class Servicios {
     }
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
-    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<response>'.$response_pppp.'</response>';  
     $xml .= '<description>'.$description.'</description>';  
     $xml .= '</result>';    
     return $xml;  
