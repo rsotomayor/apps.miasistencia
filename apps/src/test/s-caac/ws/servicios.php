@@ -284,7 +284,7 @@ class Servicios {
     } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
       $response = "KO.USRNOTFOUND";      
       $description = 'Usuario no encontrado' ;
-    } else if ( ($usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
+    } else if ( $usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
       $response = "KO.USRNOTEMPRESA";      
       $description = 'Usuario no encontrado' ;
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
