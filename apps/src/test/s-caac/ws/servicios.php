@@ -284,6 +284,9 @@ class Servicios {
     } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
       $response = "KO.USRNOTFOUND";      
       $description = 'Usuario no encontrado' ;
+    } else if ( ($usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
+      $response = "KO.USRNOTEMPRESA";      
+      $description = 'Usuario no encontrado' ;
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
       $response = "KO.EMAILNOREGISTRADO";      
       $description = 'Email No Registrado' ;      
@@ -304,7 +307,6 @@ class Servicios {
       $description .= 'Dirección: '.$organizacion_r['direccion']."|";
       $description .= 'Telefono: '.$organizacion_r['telefono']."|";
       $description .= 'Email Empresa: '.$organizacion_r['email'];
-
       if ( actualizaModulo($idmodulo,$organizacion_r['idcliente']) != 0 ) {
         $response     = "KO.ACTMODULO";
         $description  = "Dispositivo No Permitido"; 
