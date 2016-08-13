@@ -24,8 +24,6 @@ function enviaMail($usuarios_p,$subject_p,$mailBody_p,$issmtp_p=false) {
 
   require_once ("/u/savtec/public_html/cscweb/phpMailer/class.phpmailer.php");    
   
-  $idcliente = $myutil_g->getIdCliente();
-  
 
   $NombreSistema      = "Soporte Savtec" ;
   if ( $issmtp_p  ) {    
