@@ -297,7 +297,7 @@ class Servicios {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
     } else {
-      $response = "OK";  
+      $response = "KO.ERROR;  
       $description  = 'Usuario Registrado|';
       $description .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
       $description .= '================== EMPRESA ==================|';
