@@ -744,7 +744,7 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket']    .= 'TRANSACCION: '.$record['idtransaccion'].'|';
   $record_p ['ticket']    .= 'EVENTO: '.$record['idtipoevento'].'|';
   $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
-  $record_p ['ticket']    .= 'POSICION: ('.round($record['latitud'],4).','.round($record['longitud'],4).')';    
+  $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
   
   
   $usuarios_r[] = array(
