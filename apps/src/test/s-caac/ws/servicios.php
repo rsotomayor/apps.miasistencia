@@ -284,7 +284,7 @@ class Servicios {
     } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
       $response = "KO.USRNOTFOUND";      
       $description = 'Usuario no encontrado' ;
-    } else if ( $usuario_r['idorganizacion'] == '111'.$organizacion_r['rut'] ) {
+    } else if ( $usuario_r['idorganizacion'] != '111'.$organizacion_r['rut'] ) {
       $response = "KO.USRNOTEMPRESA";      
       $description = 'Usuario no encontrado' ;
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
@@ -297,7 +297,7 @@ class Servicios {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
     } else {
-      $response = "KO.ERROR;  
+      $response = "KO.ERROR";  
       $description  = 'Usuario Registrado|';
       $description .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
       $description .= '================== EMPRESA ==================|';
