@@ -518,10 +518,12 @@ function registraEvento($xmldata_p) {
   fclose($fo);
 
 
+  $idio = isset($record['idio']) ? $record['idio'] : 'E' ;
+
   switch ( $record['idevento'] ) {
     case 'A':
       $record['idevento']       = 'REPORT.ACCESO' ;
-      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
+      $record['idestado']       = ($idio == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       break;
     case 'I':
       $record['idevento']        = 'INICIO.VIAJE' ;
