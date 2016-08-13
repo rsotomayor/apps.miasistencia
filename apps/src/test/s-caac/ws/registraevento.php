@@ -27,9 +27,9 @@ function enviaMail($usuarios_p,$subject_p,$mailBody_p,$issmtp_p=false) {
 
   $NombreSistema      = "Soporte Savtec" ;
   if ( $issmtp_p  ) {    
-    $EmailSistema       = "soporte.savtec@gmail.com" ;
+    $EmailSistema       = "soporte@miasistencia.cl" ;
   } else {
-    $EmailSistema       = "soporte.savtec@gmail.com" ;
+    $EmailSistema       = "soporte@miasistencia.cl" ;
   }
 
   $mail           = new PHPMailer();
