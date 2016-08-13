@@ -336,9 +336,11 @@ function registraAcceso(&$record_p) {
   
   $record_p['fechahora'] = $fechahora;
   
-  if ( $record_p['idio'] == 'E' ) {
+  $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
+  
+  if ( $idio == 'E' ) {
     $record_p['idtransaccion'] = 'ENTRADA';
-  } else if ( $record_p['idio'] == 'S' ) {
+  } else if ( $idio == 'S' ) {
     $record_p['idtransaccion'] = 'SALIDA';
   } else {
     $record_p['idtransaccion'] = 'NOTKNOWN';
@@ -746,7 +748,7 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
   $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
   
-  
+  /*
   $usuarios_r[] = array(
                   "idusuario" => $usuario_r['rut'] ,
                   "to"        => "to" ,
@@ -758,7 +760,7 @@ function registraEventoMarca(&$record_p) {
   $mailBody = str_replace('|','<br />',$record_p['ticket']);
 
   enviaMail($usuarios_r,$subject,$mailBody);
-
+*/
 
   return $retval;;
 }
