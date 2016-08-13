@@ -750,7 +750,7 @@ function registraEventoMarca(&$record_p) {
   
   
   $usuarios_r[] = array(
-                  "idusuario" => $idusuario ,
+                  "idusuario" => $usuario_r['rut'] ,
                   "to"        => "to" ,
                   "name"      => $nombre,
                   "email"     => $email
@@ -759,7 +759,7 @@ function registraEventoMarca(&$record_p) {
   $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
   $mailBody = str_replace('|','<br />',$record_p['ticket']);
 
-  enviaMail($usuarios_p,$subject,$mailBody);
+  enviaMail($usuarios_r,$subject,$mailBody);
 
 
   return $retval;;
