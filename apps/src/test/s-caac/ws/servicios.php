@@ -247,14 +247,74 @@ class Servicios {
   function registraUsuario($record_p) {
     require_once ("registraevento.php");
 
+
     $fp = fopen('/tmp/matest.log', 'a');
     fwrite($fp,"BEGIN ==> registrando Usuario\n");    
     fwrite($fp, print_r($record_p, TRUE));
     fwrite($fp,"END ==> registrando Usuario\n");    
-    fclose($fp);
+    fclose($fp);   
 
-    $response    = 'OK' ;
-    $description = 'En desarrollo ('.strftime('%Y-%m-%d %H:%M:%S',time()).')' ;
+    $rutusuario = isset($record_p['rutusuario']) ? trim($record_p['rutusuario']) : NULL ;
+    $rutempresa = isset($record_p['rutempresa']) ? trim($record_p['rutempresa']) : NULL ;
+    $email      = isset($record_p['email']) ? trim($record_p['email']) : NULL ;
+    $password   = isset($record_p['password']) ? trim($record_p['password']) : NULL ;
+
+    $idmodulo   = isset($record_p['idmodulo']) ? trim($record_p['idmodulo']) : NULL ;
+    $idmovil    = isset($record_p['imei']) ? trim($record_p['imei']) : NULL ;
+
+
+    if ( $idmodulo == NULL ) {
+      $response = "KO.IDMODULO";   
+      $description = 'Modulo No Valido' ;
+    } else if ( $idmovil == NULL ) {
+      $response = "KO.IDMOVIL";   
+      $description = 'IMEI No Valido' ;
+    } else if ( validaRut($rutusuario) == NULL ) {
+      $response = "KO.RUTUSUARIO";      
+      $description = 'Rut Usuario no valido' ;
+    } else if ( validaRut($rutempresa) == NULL ) {
+      $response = "KO.RUTEMPRESA";      
+      $description = 'Rut Empresa no valido' ;
+    } else if ( validaMail($email) == false ) {
+      $response = "KO.EMAIL";      
+      $description = 'Correo Electrónico incorrecto' ;
+    } else if ( ($organizacion_r = getRegistroOrganizacion($rutempresa)) == NULL ) {
+      $response = "KO.EMPNOTFOUND";      
+      $description = 'Empresa no encontrada' ;
+    } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
+      $response = "KO.USRNOTFOUND";      
+      $description = 'Usuario no encontrado' ;
+    } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
+      $response = "KO.EMAILNOREGISTRADO";      
+      $description = 'Email No Registrado' ;      
+    } else if ( ($password_r = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) == NULL ) {
+      $response = "KO.PWDNOTFOUND";      
+      $description = 'Usuario o contraseña no registrada' ;
+    } else if ( $password_r['apassword'] !== $password ) {
+      $response    = "KO.PWDWRONG";
+      $description = 'Contraseña Incorrecta' ;
+    } else {
+      $response = "OK";  
+      $description  = 'Usuario Registrado|';
+      $description .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
+      $description .= '================== EMPRESA ==================|';
+      $description .= 'Rut Empresa: '.$organizacion_r['rut']."|";
+      $description .= 'Razon Social: '.$organizacion_r['razonsocial']."|";
+      $description .= 'Nombre Fantasia: '.$organizacion_r['nombrefantasia']."|";
+      $description .= 'Dirección: '.$organizacion_r['direccion']."|";
+      $description .= 'Telefono: '.$organizacion_r['telefono']."|";
+      $description .= 'Email Empresa: '.$organizacion_r['email'];
+
+      if ( actualizaModulo($idmodulo,$organizacion_r['idcliente']) != 0 ) {
+        $response     = "KO.ACTMODULO";
+        $description  = "Dispositivo No Permitido"; 
+      }
+
+    }
+
+
+
+    //~ $description = 'En desarrollo ('.strftime('%Y-%m-%d %H:%M:%S',time()).')' ;
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
     $xml .= '<response>'.$response.'</response>';  
@@ -284,6 +344,8 @@ class Servicios {
           $response = 'KO.NULLACCESO';break;
         case 2:
           $response = 'KO.ACCESODENEGADO';break;
+        case 5:
+          $response = 'KO.PWDINCORRECTA';break;
         default:
           $response = 'KO.REGISTRO'  ;
           break;
@@ -291,8 +353,14 @@ class Servicios {
     }
 
 
-    
-    $description = NULL ;
+    $fechahora = strftime('%Y-%m-%d %H:%M:%S',time());
+    if ( $response == 'OK' ) {
+      $description = $record_p['ticket'] ;
+    } else {
+      $description = "Error al registrar asistencia|"; 
+      $description = $record_p['ticket']; 
+       
+    }
     $xml  = '<?xml version="1.0"?>';
     $xml .= '<result>';
     $xml .= '<response>'.$response.'</response>';  

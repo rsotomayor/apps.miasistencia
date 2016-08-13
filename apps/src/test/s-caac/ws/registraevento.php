@@ -27,6 +27,15 @@ function validaEntero($str_p ) {
   return true ; 
 }
 
+function validaMail($email_p){
+  return preg_match("/^[A-Z0-9._%-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i", $email_p );
+}
+
+
+function validaTwitter($email_p){
+  return preg_match("/^@[A-Z0-9.-]+.[A-Z]{2,4}$/i", $email_p );
+}
+
 function digitoverificador($r) {
   $s=1;
   for($m=0;$r!=0;$r/=10) 
@@ -36,6 +45,13 @@ function digitoverificador($r) {
 
 function validaRut($str_p) {
   $retval = -1 ;
+
+  $pos = strpos($str_p, '-');
+
+  if ( $pos == false ) {
+    $str_p = substr($str_p,0,-1).'-'.substr($str_p,-1);
+  }
+  
   $rut = str_replace(".","",$str_p);
   $rut = str_replace(" ","",$rut);
   
@@ -67,6 +83,33 @@ function validaRut($str_p) {
 }
 
 
+    
+function actualizaModulo($idmodulo_p,$idcliente_p) {
+  global $link_g;
+  
+  $tname = 'apps_db.sac_modulos' ;
+  
+  $fechahora = strftime('%Y-%m-%d %H:%M:%S',time());
+
+  try {
+    $ret = $link_g->Replace($tname, 
+        array(  'id'        => $idmodulo_p,
+                'idcliente' => $idcliente_p,
+                'fechahora' => $fechahora),
+        array('id','idcliente'),
+        $autoquote=true
+        );
+  } catch (exception $e) { 
+    //~ echo "Error: , ".$e->msg."<br>";
+    return -1;
+  }
+  
+  
+  return 0;
+
+}    
+
+
 function getRegistroByModulo($idmodulo_p) {
   global $link_g;
   
@@ -83,9 +126,79 @@ function getRegistroByModulo($idmodulo_p) {
 
 }
 
-function registraAcceso($record_p) {
+function getRegistroOrganizacion($idorganizacion_p) {
+  global $link_g;
+
+
+  $idorganizacion = strtoupper(str_replace("-","",$idorganizacion_p));
+  
+  $sqlString  = "SELECT
+      * FROM
+      ma_db.sac_organizacion
+      WHERE 
+      UPPER(REPLACE(rut,'-','')) = '$idorganizacion' " ;
+
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+  $rs = $link_g->Execute($sqlString);
+
+  return $rs->fields ;
+
+}
+
+function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
+  global $link_g;
+  
+  $dbname = $idcliente_p.'_db' ;
+  $idusuario_p = strtoupper(str_replace("-","",$idusuario_p));  
+  
+  $sqlString  = "SELECT
+      * FROM
+      $dbname.sac_usuarios
+      WHERE 
+      UPPER(REPLACE(rut,'-','')) = '$idusuario_p' " ;
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+
+  try {
+    $rs = $link_g->Execute($sqlString);
+  } catch (exception $e) { 
+    //~ echo "Error: , ".$e->msg."<br>";
+    return NULL;
+  } 
+
+
+  return $rs->fields ;
+
+}
+
+function getRegistroUsuarioByPassword($idcliente_p,$idusuario_p) {
+  global $link_g;
+
+
+  $sqlString  = "SELECT * FROM savtec_common.s_login 
+                 WHERE
+                 idusuario  = '$idusuario_p' AND idorganizacion = '$idcliente_p' " ;
+  
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+
+
+  try {
+    $rs = $link_g->Execute($sqlString);
+  } catch (exception $e) { 
+    //~ echo "Error: , ".$e->msg."<br>";
+    return NULL;
+  } 
+
+
+  return $rs->fields ;
+
+}
+
+
+
+function registraAcceso(&$record_p) {
   global $link_g;
   $retval = 0 ;
+
   date_default_timezone_set('UTC');
 
   $ipaddress       = isset($_SERVER['REMOTE_ADDR'])    ? $_SERVER['REMOTE_ADDR'] : NULL ;
@@ -133,8 +246,18 @@ function registraAcceso($record_p) {
   }
 
   $id              = sha1($idmodulo.'-'.$idevento.'-'.$idusuario.'-'.$idestado.'-'.$fechahora);
-
-  $tablename               = $record_p['tablename'];
+  $hash_sum        = isset($record_p['hash_sum'])        ? $record_p['hash_sum'] : NULL ;   
+  $tablename       = $record_p['tablename'];
+  
+  $record_p['fechahora'] = $fechahora;
+  
+  if ( $record_p['idio'] == 'E' ) {
+    $record_p['idtransaccion'] = 'ENTRADA';
+  } else if ( $record_p['idio'] == 'S' ) {
+    $record_p['idtransaccion'] = 'SALIDA';
+  } else {
+    $record_p['idtransaccion'] = 'NOTKNOWN';
+  }
 
   $sqlString = "INSERT INTO $tablename(
         id,
@@ -159,7 +282,8 @@ function registraAcceso($record_p) {
         idresultado,
         scorehuella,
         ipaddress,
-        nota) 
+        nota,
+        hash_sum) 
         VALUES (
         '$id',
         '$idevento',
@@ -183,7 +307,8 @@ function registraAcceso($record_p) {
         '$idresultado',
         '$scorehuella',
         '$ipaddress',
-        '$nota'
+        '$nota',
+        '$hash_sum'
         ) ";
 
 
@@ -390,9 +515,10 @@ function registraEvento($xmldata_p) {
 }
 
 
-function registraEventoMarca($record_p) {
+function registraEventoMarca(&$record_p) {
   $retval = 0;
 
+  $record_p ['ticket'] = 'NO TICKET DISPONIBLE';
   $idacceso = NULL;
   
   $xmldata = $record_p['xmldata'];
@@ -491,6 +617,95 @@ function registraEventoMarca($record_p) {
 #KEY velocidad  VALOR 0.000000
 #KEY flagenviado  VALOR 0
 
+  //~ $record_p ['ticket'] = 'NO TICKET DISPONIBLE';
+  
+    $rutusuario = isset($record['idusuario']) ? trim($record['idusuario']) : NULL ;
+    $password   = isset($record['password']) ? trim($record['password']) : NULL ;
+    
+    $usuario_r  = getRegistroUsuarioByRut($idcliente,$rutusuario);
+    $empresa_r  = getRegistroOrganizacion($usuario_r['idorganizacion']);
+    
+    if ( $password != NULL ) {
+      $password_r           = getRegistroUsuarioByPassword($idcliente,$usuario_r['idusuario']);
+      if ( $password_r['apassword'] !== $password ) {
+        $record_p ['ticket']  = "Contraseña incorrecta ($idcliente,$rutusuario) " ;
+        return 5;
+      }
+    }
+    
+    global $tzoffset_g;
+    
+    if ( $tzoffset_g == NULL ) {
+      $tzoffset_g = -4;  
+    }
+    
+    $record_p ['ticket']     = '---------- CONTROL ASISTENCIA ----------|' ;    
+    $record_p ['ticket']    .= '*** TRABAJADOR ***|' ;    
+    $record_p ['ticket']    .= $usuario_r['nombres'].' '.$usuario_r['apellidos'].'|' ;    
+    $record_p ['ticket']    .= 'RUT: '.$usuario_r['rut'].'|' ;    
+    $record_p ['ticket']    .= strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600).'|' ;    
+    $record_p ['ticket']    .= '*** EMPLEADOR ***|' ;    
+    $record_p ['ticket']    .= $empresa_r['razonsocial'].'|' ;    
+    $record_p ['ticket']    .= 'RUT: '.$empresa_r['rut'].'|' ;    
+    $record_p ['ticket']    .= 'DIRECCION: '.$empresa_r['direccion'].'|' ;    
+    $record_p ['ticket']    .= '*** DATOS ADICIONALES ***|' ;    
+    $record_p ['ticket']    .= 'TRANSACCION: '.$record['idtransaccion'].'|';
+    $record_p ['ticket']    .= 'EVENTO: '.$record['idtipoevento'].'|';
+    $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
+    $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
+    
+    //~ $rutempresa = isset($record['rutempresa']) ? trim($record['rutempresa']) : NULL ;
+    //~ $email      = isset($record['email']) ? trim($record['email']) : NULL ;
+    //~ $password   = isset($record['password']) ? trim($record['password']) : NULL ;
+
+    //~ $idmodulo   = isset($record['idacceso']) ? trim($record['idacceso']) : NULL ;
+    //~ $idmovil    = isset($record['imei']) ? trim($record['imei']) : NULL ;
+
+
+    //~ if ( $idmodulo == NULL ) {
+      //~ $response = "KO.IDMODULO";   
+      //~ $description = 'Modulo No Valido' ;
+    //~ } else if ( $idmovil == NULL ) {
+      //~ $response = "KO.IDMOVIL";   
+      //~ $description = 'IMEI No Valido' ;
+    //~ } else if ( validaRut($rutusuario) == NULL ) {
+      //~ $response = "KO.RUTUSUARIO";      
+      //~ $description = 'Rut Usuario no valido' ;
+    //~ } else if ( validaRut($rutempresa) == NULL ) {
+      //~ $response = "KO.RUTEMPRESA";      
+      //~ $description = 'Rut Empresa no valido' ;
+    //~ } else if ( validaMail($email) == false ) {
+      //~ $response = "KO.EMAIL";      
+      //~ $description = 'Correo Electrónico incorrecto' ;
+    //~ } else if ( ($organizacion_r = getRegistroOrganizacion($rutempresa)) == NULL ) {
+      //~ $response = "KO.EMPNOTFOUND";      
+      //~ $description = 'Empresa no encontrada' ;
+    //~ } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
+      //~ $response = "KO.USRNOTFOUND";      
+      //~ $description = 'Usuario no encontrado' ;
+    //~ } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
+      //~ $response = "KO.EMAILNOREGISTRADO";      
+      //~ $description = 'Email No Registrado' ;      
+    //~ } else if ( ($password_r = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) == NULL ) {
+      //~ $response = "KO.PWDNOTFOUND";      
+      //~ $description = 'Usuario o contraseña no registrada' ;
+    //~ } else if ( $password_r['apassword'] !== $password ) {
+      //~ $response    = "KO.PWDWRONG";
+      //~ $description = 'Contraseña Incorrecta' ;
+    //~ } else {
+      //~ $response = "OK";  
+      //~ $description  = 'Usuario Registrado|';
+      //~ $description .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
+      //~ $description .= '================== EMPRESA ==================|';
+      //~ $description .= 'Rut Empresa: '.$organizacion_r['rut']."|";
+      //~ $description .= 'Razon Social: '.$organizacion_r['razonsocial']."|";
+      //~ $description .= 'Nombre Fantasia: '.$organizacion_r['nombrefantasia']."|";
+      //~ $description .= 'Dirección: '.$organizacion_r['direccion']."|";
+      //~ $description .= 'Telefono: '.$organizacion_r['telefono']."|";
+      //~ $description .= 'Email Empresa: '.$organizacion_r['email'];
+
+    //~ }
+  
 
 
   return $retval;;
