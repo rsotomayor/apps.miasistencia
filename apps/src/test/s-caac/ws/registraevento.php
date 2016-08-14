@@ -294,7 +294,7 @@ function registraAcceso(&$record_p) {
   $fechahora       = isset($record_p['fechahora'])     ? $record_p['fechahora'] : NULL ;  ;
   $ts              = ($fechahora != NULL ) ? strtotime($fechahora) : time();
 
-//  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
+  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
   $tsgps           = $ts ;
   $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
 
@@ -333,6 +333,7 @@ function registraAcceso(&$record_p) {
   $tablename       = $record_p['tablename'];
   
   $record_p['fechahora'] = $fechahora;
+  $record_p['fechahora_gps'] = $fechahora_gps;
   
   $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
   
@@ -735,7 +736,9 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket']    .= $nombre.'|' ;    
   $record_p ['ticket']    .= 'RUT: '.$usuario_r['rut'].'|' ;    
   $record_p ['ticket']    .= 'EMail: '.$email.'|' ;    
-  $record_p ['ticket']    .= $fechahora.'|' ;    
+  $record_p ['ticket']    .= 'Hora'.$fechahora_gps.'|' ;    
+  $record_p ['ticket']    .= 'Hora Telefono'.$fechahora.'|' ;    
+  $record_p ['ticket']    .= $fechahora_gps.'|' ;    
   $record_p ['ticket']    .= '*** EMPLEADOR ***|' ;    
   $record_p ['ticket']    .= $empresa_r['razonsocial'].'|' ;    
   $record_p ['ticket']    .= 'RUT: '.$empresa_r['rut'].'|' ;    
