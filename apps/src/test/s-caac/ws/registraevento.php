@@ -27,10 +27,10 @@ function enviaMail($usuarios_p,$subject_p,$mailBody_p,$issmtp_p=false) {
 
   $NombreSistema      = "Soporte Savtec" ;
   if ( $issmtp_p  ) {    
-    $EmailSistema       = "ubuntu@miasistencia.cl" ;
+    $EmailSistema       = "soporte@miasistencia.cl" ;
     //~ $EmailSistema       = "soporte.savtec@gmail.com" ;
   } else {
-    $EmailSistema       = "ubuntu@miasistencia.cl" ;
+    $EmailSistema       = "soporte@miasistencia.cl" ;
     //~ $EmailSistema       = "soporte.savtec@gmail.com" ;
   }
 
