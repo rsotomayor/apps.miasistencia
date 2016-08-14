@@ -298,6 +298,7 @@ function registraAcceso(&$record_p) {
   $tsgps           = $ts ;
   $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
 
+
   $idacceso        = isset($record_p['idacceso'])        ? $record_p['idacceso'] : NULL ;
   $idmodulo        = isset($record_p['idmodulo'])        ? $record_p['idmodulo'] : NULL ;
   $idmovil         = isset($record_p['idmovil'])         ? $record_p['idmovil'] : NULL ;
@@ -334,6 +335,10 @@ function registraAcceso(&$record_p) {
   
   $record_p['fechahora']     = $fechahora;
   $record_p['fechahora_gps'] = $fechahora_gps;
+
+  if ( $tsgps != NULL ) {
+    $fechahora = $fechahora_gps;
+  }
   
   $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
   
