@@ -757,7 +757,7 @@ function registraEventoMarca(&$record_p) {
   $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
   $mailBody = str_replace('|','<br />',$record_p['ticket']);
 
-  enviaMail($usuarios_r,$subject,$mailBody);
+  enviaMail($usuarios_r,$subject,$mailBody,true);
 
   return $retval;;
 }
