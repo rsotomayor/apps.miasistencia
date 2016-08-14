@@ -332,7 +332,7 @@ function registraAcceso(&$record_p) {
   $hash_sum        = isset($record_p['hash_sum'])        ? $record_p['hash_sum'] : NULL ;   
   $tablename       = $record_p['tablename'];
   
-  $record_p['fechahora'] = $fechahora;
+  $record_p['fechahora']     = $fechahora;
   $record_p['fechahora_gps'] = $fechahora_gps;
   
   $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
