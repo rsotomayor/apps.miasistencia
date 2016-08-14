@@ -732,7 +732,7 @@ function registraEventoMarca(&$record_p) {
   global $tzoffset_g;
   
   if ( $tzoffset_g == NULL ) {
-    $tzoffset_g = -4;  
+    $tzoffset_g = -3;  
   }
   
   $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
@@ -745,8 +745,8 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket']    .= $nombre.'|' ;    
   $record_p ['ticket']    .= 'RUT: '.$usuario_r['rut'].'|' ;    
   $record_p ['ticket']    .= 'EMail: '.$email.'|' ;    
-  $record_p ['ticket']    .= 'Hora'.$fechahoragps.'|' ;    
-  $record_p ['ticket']    .= 'Hora Telefono'.$fechahora.'|' ;    
+  $record_p ['ticket']    .= 'Hora: '.$fechahoragps.'|' ;    
+  $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
   $record_p ['ticket']    .= '*** EMPLEADOR ***|' ;    
   $record_p ['ticket']    .= $empresa_r['razonsocial'].'|' ;    
   $record_p ['ticket']    .= 'RUT: '.$empresa_r['rut'].'|' ;    
