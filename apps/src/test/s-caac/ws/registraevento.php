@@ -294,9 +294,12 @@ function registraAcceso(&$record_p) {
   $fechahora       = isset($record_p['fechahora'])     ? $record_p['fechahora'] : NULL ;  ;
   $ts              = ($fechahora != NULL ) ? strtotime($fechahora) : time();
 
-  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : $ts ;
-  $tsgps           = $ts ;
-  $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
+  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : NULL ;
+  if ( $tsgps != NULL ) {
+    $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
+  } else {
+    $fechahoragps    = NULL ;
+  }
 
 
   $idacceso        = isset($record_p['idacceso'])        ? $record_p['idacceso'] : NULL ;
