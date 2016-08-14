@@ -296,7 +296,7 @@ function registraAcceso(&$record_p) {
 
   $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : NULL ;
   if ( $tsgps != NULL ) {
-    $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',$tsgps);
+    $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',(int)$tsgps);
   } else {
     $fechahoragps    = NULL ;
   }
