@@ -319,7 +319,7 @@ class Servicios {
       
       if ( actualizaModulo($myparam) != 0 ) {
         $response     = "KO.ACTMODULO";
-        $description  = "Dispositivo No Permitido"; 
+        $description  = $myparam['msg']; 
       }
 
     }
