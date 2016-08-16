@@ -167,18 +167,24 @@ function validaRut($str_p) {
 
 
     
-function actualizaModulo($idmodulo_p,$idcliente_p) {
+function actualizaModulo($record_p) {
   global $link_g;
+  
+  $idmodulo         = $record_p['idmodulo'];
+  $idcliente        = $record_p['idcliente'];
+  $fechahora        = $record_p['fechahora'];
+  $rutusuario       = $record_p['rutusuario'];
+  $rutorganizacion  = $record_p['rutorganizacion'];
+  $email            = $record_p['email'];
+  
   
   $tname = 'apps_db.sac_modulos' ;
   
-  $fechahora = strftime('%Y-%m-%d %H:%M:%S',time());
 
   try {
     $ret = $link_g->Replace($tname, 
-        array(  'id'        => $idmodulo_p,
-                'idcliente' => $idcliente_p,
-                'fechahora' => $fechahora),
+        array(  'id'        => $idmodulo,
+                'idcliente' => $idcliente),
         array('id','idcliente'),
         $autoquote=true
         );
@@ -186,7 +192,23 @@ function actualizaModulo($idmodulo_p,$idcliente_p) {
     //~ echo "Error: , ".$e->msg."<br>";
     return -1;
   }
-  
+
+  $tname = 'apps_db.sac_modulo_registro' ;
+
+  try {
+    $ret = $link_g->Replace($tname, 
+        array(  'idmodulo'        => $idmodulo,
+                'fechahora'       => $fechahora,
+                'rutusuario'      => $rutusuario,
+                'rutorganizacion' => $rutorganizacion,
+                'email'           => $email),
+        array('idmodulo','fechahora'),
+        $autoquote=true
+        );
+  } catch (exception $e) { 
+    //~ echo "Error: , ".$e->msg."<br>";
+    return -1;
+  }
   
   return 0;
 

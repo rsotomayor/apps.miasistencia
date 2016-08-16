@@ -308,7 +308,16 @@ class Servicios {
       $description .= 'Dirección: '.$organizacion_r['direccion']."|";
       $description .= 'Telefono: '.$organizacion_r['telefono']."|";
       $description .= 'Email Empresa: '.$organizacion_r['email'];
-      if ( actualizaModulo($idmodulo,$organizacion_r['idcliente']) != 0 ) {
+  
+      $myparam['idmodulo']         = $idmodulo ;
+      $myparam['idcliente']        = $organizacion_r['idcliente'] ;
+      $myparam['fechahora']        = strftime('%Y-%m-%d %H:%M:%S',time());
+      $myparam['rutusuario']       = $usuario_r['rut'];
+      $myparam['rutorganizacion']  = $organizacion_r['rut'];
+      $myparam['email']            = $usuario_r['email'] ;
+      
+      
+      if ( actualizaModulo($myparam) != 0 ) {
         $response     = "KO.ACTMODULO";
         $description  = "Dispositivo No Permitido"; 
       }
