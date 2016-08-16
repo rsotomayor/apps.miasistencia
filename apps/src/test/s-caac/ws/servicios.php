@@ -295,7 +295,29 @@ class Servicios {
       $response = "KO.CAMBIAPASSWORD";  
       $description  = "Favor revise su correo ".$usuario_r['email'].'|';
       $description .= 'y proceda a cambiar su contraseña';
+      
+      $nombre       = $usuario_r['apellidos'].','.$usuario_r['nombres'];
+      $email        = $usuario_r['email'];
+      $idcliente    = $organizacion_r['idcliente'];
 
+      $usuarios_r[] = array(
+                      "idusuario" => $usuario_r['rut'] ,
+                      "to"        => "to" ,
+                      "name"      => $nombre,
+                      "email"     => $email
+                         );
+
+      $mensaje  = "Estimado Usuario<br />";
+      $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?accion=cambiocontrasena&email=$email";
+      $mensaje .= "Atentos saludos<br />";
+      
+                               
+      $subject  = "[MIASISTENCIA] Solicitud de cambio de Contraseña";
+      $mailBody = $mensaje;
+
+      enviaMail($usuarios_r,$subject,$mailBody);
+  
+      
     }
 
 
