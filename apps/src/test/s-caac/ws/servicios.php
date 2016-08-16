@@ -369,10 +369,10 @@ class Servicios {
       $description = 'Contraseña Incorrecta' ;
     } else if ( (time() - $tsUltimoRegistro) < 30*3600)  {
       $deltaT       = (time() - $tsUltimoRegistro)/60;
-      //~ $deltaT       = round($deltaT,0);
+      $deltaT       = round($deltaT,0);
       $response     = "KO.USRALRREGISTERED";
-      $description  = 'Usuario ya registrado para este dispositivo|';
-      $description .= "[$idmodulo]|";
+      $description  = 'Usuario ya registrado hace menos de 30 minutos|';
+      $description .= "para dispositivo [$idmodulo]|";
       $description .= "Espere 30 minutos, quedan $deltaT";
     } else {
       $response = "OK";  
