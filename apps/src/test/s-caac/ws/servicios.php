@@ -309,6 +309,7 @@ class Servicios {
 
       $mensaje  = "Estimado Usuario<br />";
       $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?accion=cambiocontrasena&email=$email";
+      $mensaje .= "<br /><br /><br />";
       $mensaje .= "Atentos saludos<br />";
       
                                
