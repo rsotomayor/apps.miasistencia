@@ -294,7 +294,7 @@ class Servicios {
     } else {
       $response = "KO.CAMBIAPASSWORD";  
       $description  = "Favor revise su correo ".$usuario_r['email'].'|';
-      $description .= 'y proceda a cambiar su contraseña';
+      $description .= 'y proceda a cambiar su contrasena';
       
       $nombre       = $usuario_r['apellidos'].','.$usuario_r['nombres'];
       $email        = $usuario_r['email'];
@@ -317,7 +317,7 @@ class Servicios {
       $mensaje .= "Atentos saludos<br />";
       
                                
-      $subject  = "[MIASISTENCIA] Solicitud de cambio de Contraseña";
+      $subject  = "[MIASISTENCIA] Solicitud de cambio de Contrasena";
       $mailBody = $mensaje;
 
       enviaMail($usuarios_r,$subject,$mailBody);
