@@ -167,7 +167,7 @@ function validaRut($str_p) {
 
 
     
-function actualizaModulo($record_p) {
+function actualizaModulo(&$record_p) {
   global $link_g;
   
   $idmodulo         = $record_p['idmodulo'];
@@ -176,10 +176,9 @@ function actualizaModulo($record_p) {
   $rutusuario       = $record_p['rutusuario'];
   $rutorganizacion  = $record_p['rutorganizacion'];
   $email            = $record_p['email'];
+
   
-  
-  $tname = 'apps_db.sac_modulos' ;
-  
+  $tname = 'apps_db.sac_modulos' ;  
 
   try {
     $ret = $link_g->Replace($tname, 
@@ -190,6 +189,7 @@ function actualizaModulo($record_p) {
         );
   } catch (exception $e) { 
     //~ echo "Error: , ".$e->msg."<br>";
+    $record_p['msg'] = $e->msg;
     return -1;
   }
 
@@ -207,6 +207,7 @@ function actualizaModulo($record_p) {
         );
   } catch (exception $e) { 
     //~ echo "Error: , ".$e->msg."<br>";
+    $record_p['msg'] = $e->msg;
     return -1;
   }
   
