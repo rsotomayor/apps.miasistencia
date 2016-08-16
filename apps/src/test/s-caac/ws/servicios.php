@@ -293,7 +293,7 @@ class Servicios {
       $description = 'Email No Registrado' ;      
     } else {
       $response = "KO.CAMBIAPASSWORD";  
-      $description  = "Favor revise su correo ".$usuario_r['email']-'|';
+      $description  = "Favor revise su correo ".$usuario_r['email'].'|';
       $description .= 'y proceda a cambiar su contraseña';
 
     }
