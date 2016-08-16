@@ -394,7 +394,7 @@ class Servicios {
     } else if ( $password_r['apassword'] !== $password ) {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
-    } else if ( (time() - $tsUltimoRegistro) < 30*3600)  {
+    } else if ( (time() - $tsUltimoRegistro) < 30*60)  {
       $deltaT       = (time() - $tsUltimoRegistro)/60;
       $deltaT       = round($deltaT,0);
       $response     = "KO.USRALRREGISTERED";
