@@ -368,7 +368,7 @@ class Servicios {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
     } else if ( (time() - $tsUltimoRegistro) < 30*3600)  {
-      $deltaT       = (time() - $tsUltimoRegistro)/3600;
+      $deltaT       = (time() - $tsUltimoRegistro)/60;
       //~ $deltaT       = round($deltaT,0);
       $response     = "KO.USRALRREGISTERED";
       $description  = 'Usuario ya registrado para este dispositivo|';
