@@ -307,8 +307,11 @@ class Servicios {
                       "email"     => $email
                          );
 
+
+      $token    = sha1('miasistencia'.$email.'savtec');
+
       $mensaje  = "Estimado Usuario<br />";
-      $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?accion=cambiocontrasena&email=$email";
+      $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?accion=$token&email=$email";
       $mensaje .= "<br /><br /><br />";
       $mensaje .= "Atentos saludos<br />";
       
