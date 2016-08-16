@@ -193,23 +193,23 @@ function actualizaModulo(&$record_p) {
     return -1;
   }
 
-  $tname = 'apps_db.sac_modulo_registro' ;
+  //~ $tname = 'apps_db.sac_modulo_registro' ;
 
-  try {
-    $ret = $link_g->Replace($tname, 
-        array(  'idmodulo'        => $idmodulo,
-                'fechahora'       => $fechahora,
-                'rutusuario'      => $rutusuario,
-                'rutorganizacion' => $rutorganizacion,
-                'email'           => $email),
-        array('idmodulo','fechahora'),
-        $autoquote=true
-        );
-  } catch (exception $e) { 
+  //~ try {
+    //~ $ret = $link_g->Replace($tname, 
+        //~ array(  'idmodulo'        => $idmodulo,
+                //~ 'fechahora'       => $fechahora,
+                //~ 'rutusuario'      => $rutusuario,
+                //~ 'rutorganizacion' => $rutorganizacion,
+                //~ 'email'           => $email),
+        //~ array('idmodulo','fechahora'),
+        //~ $autoquote=true
+        //~ );
+  //~ } catch (exception $e) { 
     //~ echo "Error: , ".$e->msg."<br>";
-    $record_p['msg'] = $e->msg;
-    return -1;
-  }
+    //~ $record_p['msg'] = $e->msg;
+    //~ return -1;
+  //~ }
   
   return 0;
 
