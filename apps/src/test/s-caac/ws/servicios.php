@@ -244,6 +244,74 @@ class Servicios {
     return $xml;  
   }
 
+
+  function requestEmailPassword($record_p) {
+    require_once ("registraevento.php");
+
+
+    $fp = fopen('/tmp/matest.log', 'a');
+    fwrite($fp,"BEGIN ==> registrando Usuario\n");    
+    fwrite($fp, print_r($record_p, TRUE));
+    fwrite($fp,"END ==> registrando Usuario\n");    
+    fclose($fp);   
+
+    $rutusuario = isset($record_p['rutusuario']) ? trim($record_p['rutusuario']) : NULL ;
+    $rutempresa = isset($record_p['rutempresa']) ? trim($record_p['rutempresa']) : NULL ;
+    $email      = isset($record_p['email']) ? trim($record_p['email']) : NULL ;
+    $password   = isset($record_p['password']) ? trim($record_p['password']) : NULL ;
+
+    $idmodulo   = isset($record_p['idmodulo']) ? trim($record_p['idmodulo']) : NULL ;
+    $idmovil    = isset($record_p['imei']) ? trim($record_p['imei']) : NULL ;
+
+
+    if ( $idmodulo == NULL ) {
+      $response = "KO.IDMODULO";   
+      $description = 'Modulo No Valido' ;
+    } else if ( $idmovil == NULL ) {
+      $response = "KO.IDMOVIL";   
+      $description = 'IMEI No Valido' ;
+    } else if ( validaRut($rutusuario) == NULL ) {
+      $response = "KO.RUTUSUARIO";      
+      $description = 'Rut Usuario no valido' ;
+    } else if ( validaRut($rutempresa) == NULL ) {
+      $response = "KO.RUTEMPRESA";      
+      $description = 'Rut Empresa no valido' ;
+    } else if ( validaMail($email) == false ) {
+      $response = "KO.EMAIL";      
+      $description = 'Correo Electrónico incorrecto' ;
+    } else if ( ($organizacion_r = getRegistroOrganizacion($rutempresa)) == NULL ) {
+      $response = "KO.EMPNOTFOUND";      
+      $description = 'Empresa no encontrada' ;
+    } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
+      $response = "KO.USRNOTFOUND";      
+      $description = 'Usuario no encontrado' ;
+    } else if ( $usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
+      $response = "KO.USRNOTEMPRESA";      
+      $description = 'Usuario no encontrado en empresa' ;
+    } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
+      $response = "KO.EMAILNOREGISTRADO";      
+      $description = 'Email No Registrado' ;      
+    } else {
+      $response = "KO.CAMBIAPASSWORD";  
+      $description  = "Favor revise su correo ".$usuario_r['email']-'|';
+      $description .= 'y proceda a cambiar su contraseña';
+
+    }
+
+
+
+    //~ $description = 'En desarrollo ('.strftime('%Y-%m-%d %H:%M:%S',time()).')' ;
+    $xml  = '<?xml version="1.0"?>';
+    $xml .= '<result>';
+    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<description>'.$description.'</description>';  
+    $xml .= '</result>';    
+    return $xml;  
+
+
+  }
+
+
   function registraUsuario($record_p) {
     require_once ("registraevento.php");
 
