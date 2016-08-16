@@ -189,7 +189,7 @@ function actualizaModulo(&$record_p) {
         );
   } catch (exception $e) { 
     //~ echo "Error: , ".$e->msg."<br>";
-    $record_p['msg'] = $e->msg;
+    $record_p['msg'] = "001 ($idmodulo,$idcliente)".$e->msg;
     return -1;
   }
 
