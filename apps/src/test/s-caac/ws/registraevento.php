@@ -232,6 +232,26 @@ function getRegistroByModulo($idmodulo_p) {
 
 }
 
+function getUltimoRegistroByModulo($idmodulo_p) {
+  global $link_g;
+  
+  $sqlString  = "SELECT
+      a.idcliente,b.* 
+      FROM apps_db.sac_modulos a
+      JOIN apps_db.sac_modulo_registro b ON ( a.id = b.idmodulo ) 
+      WHERE 
+        id = '$idmodulo_p'
+      ORDER BY b.fechahora DESC 
+      LIMIT 1
+      " ;
+
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+  $rs = $link_g->Execute($sqlString);
+
+  return $rs->fields ;
+
+}
+
 function getRegistroOrganizacion($idorganizacion_p) {
   global $link_g;
 

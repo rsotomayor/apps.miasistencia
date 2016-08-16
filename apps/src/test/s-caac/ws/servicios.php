@@ -330,6 +330,9 @@ class Servicios {
     $idmodulo   = isset($record_p['idmodulo']) ? trim($record_p['idmodulo']) : NULL ;
     $idmovil    = isset($record_p['imei']) ? trim($record_p['imei']) : NULL ;
 
+    $ultimoregistro_r = getUltimoRegistroByModulo($idmodulo);
+    
+    $tsUltimoRegistro = strtotime($ultimoregistro_r['fechahora']);
 
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   
@@ -364,6 +367,11 @@ class Servicios {
     } else if ( $password_r['apassword'] !== $password ) {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
+    } else if ( (time() - $tsUltimoRegistro) < 30*3600)  {
+      $response    = "KO.USRALRREGISTERED";
+      $description  = 'Usuario ya registrado para este dispositivo|';
+      $description .= "[$idmodulo]|";
+      $description .= "Espere 30 minutos";
     } else {
       $response = "OK";  
       $description  = 'Usuario Registrado|';
