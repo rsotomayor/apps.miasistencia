@@ -309,7 +309,7 @@ class Servicios {
 
       $idusuario = strtolower($usuario_r['idusuario']);
 
-      $token    = sha1('miasistencia'.$idusuario.'savtec');
+      $token    = sha1('cambiapasswordmiasistencia'.$idusuario.'savtec');
 
       $mensaje  = "Estimado Usuario<br />";
       $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?accion=$token&id=$idusuario";
