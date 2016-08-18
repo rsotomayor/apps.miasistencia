@@ -360,6 +360,7 @@ class Servicios {
     $ultimoregistro_r = getUltimoRegistroByModulo($idmodulo);
     
     $tsUltimoRegistro = strtotime($ultimoregistro_r['fechahora']);
+    $TMAX_REGISTRO    = 30 ;
 
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   
@@ -394,13 +395,14 @@ class Servicios {
     } else if ( $password_r['apassword'] !== $password ) {
       $response    = "KO.PWDWRONG";
       $description = 'Contraseña Incorrecta' ;
-    } else if ( (time() - $tsUltimoRegistro) < 30*60)  {
+    } else if ( (time() - $tsUltimoRegistro) < $TMAX_REGISTRO*60)  {
       $deltaT       = (time() - $tsUltimoRegistro)/60;
       $deltaT       = round($deltaT,0);
+      
       $response     = "KO.USRALRREGISTERED";
-      $description  = 'Usuario ya registrado hace menos de 30 minutos|';
+      $description  = 'Usuario ya registrado hace menos de '.$TMAX_REGISTRO.' minutos|';
       $description .= "para dispositivo [$idmodulo]|";
-      $description .= "Espere 30 minutos, quedan $deltaT";
+      $description .= 'Espere '.($TMAX_REGISTRO-$deltaT).' minutos';
     } else {
       $response = "OK";  
       $description  = 'Usuario Registrado|';
