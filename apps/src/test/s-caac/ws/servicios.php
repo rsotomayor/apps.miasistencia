@@ -397,8 +397,7 @@ class Servicios {
       $description = 'Contraseña Incorrecta' ;
     } else if ( (time() - $tsUltimoRegistro) < $TMAX_REGISTRO*60)  {
       $deltaT       = (time() - $tsUltimoRegistro)/60;
-      $deltaT       = round($deltaT,0);
-      
+      $deltaT       = round($deltaT,0);      
       $response     = "KO.USRALRREGISTERED";
       $description  = 'Usuario ya registrado hace menos de '.$TMAX_REGISTRO.' minutos|';
       $description .= "para dispositivo [$idmodulo]|";
