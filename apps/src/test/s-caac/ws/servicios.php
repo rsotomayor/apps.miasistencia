@@ -381,11 +381,11 @@ class Servicios {
       $response = "KO.EMPNOTFOUND";      
       $description = 'Empresa no encontrada' ;
     } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
-      $response = "KO.USRNOTFOUND";      
-      $description = 'Usuario no encontrado' ;
+      $response = "KO.USRNOTFOUND ";      
+      $description = 'Usuario ['.$rutusuario.'] no encontrado en cliente '.$organizacion_r['idcliente'] ;
     } else if ( $usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
       $response = "KO.USRNOTEMPRESA";      
-      $description = 'Usuario no encontrado en empresa' ;
+      $description = 'Usuario ['.$usuario_r['rut'].'] de ['.$usuario_r['idorganizacion'].'] no encontrado en empresa ['.$organizacion_r['rut'].']' ;
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
       $response = "KO.EMAILNOREGISTRADO";      
       $description = 'Email No Registrado' ;      

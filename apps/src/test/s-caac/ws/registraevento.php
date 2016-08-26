@@ -258,11 +258,13 @@ function getRegistroOrganizacion($idorganizacion_p) {
 
   $idorganizacion = strtoupper(str_replace("-","",$idorganizacion_p));
   
+  
   $sqlString  = "SELECT
-      * FROM
-      ma_db.sac_organizacion
+      REPLACE(a.rut,'-','') as rut,a.descripcion,a.direccion,a.telefono,a.fax,
+      a.email,a.razonsocial,a.logo,a.nombrefantasia,a.flagrelacionado,a.idcliente
+      FROM ma_db.sac_organizacion a
       WHERE 
-      UPPER(REPLACE(rut,'-','')) = '$idorganizacion' " ;
+      UPPER(REPLACE(a.rut,'-','')) = '$idorganizacion' " ;
 
   $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
   $rs = $link_g->Execute($sqlString);
