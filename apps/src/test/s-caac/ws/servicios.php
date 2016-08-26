@@ -357,6 +357,20 @@ class Servicios {
     $idmodulo   = isset($record_p['idmodulo']) ? trim($record_p['idmodulo']) : NULL ;
     $idmovil    = isset($record_p['imei']) ? trim($record_p['imei']) : NULL ;
 
+
+
+    $rutusuario = str_replace('.','',$rutusuario);
+    $rutusuario = str_replace('-','',$rutusuario);
+    
+    $rutempresa = str_replace('.','',$rutempresa);
+    $rutempresa = str_replace('-','',$rutempresa);
+    
+
+    $rutusuario  = strtoupper($rutusuario);
+    $rutempresa  = strtoupper($rutempresa);
+    
+    
+    
     $ultimoregistro_r = getUltimoRegistroByModulo($idmodulo);
     
     $tsUltimoRegistro = strtotime($ultimoregistro_r['fechahora']);

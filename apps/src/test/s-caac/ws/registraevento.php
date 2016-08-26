@@ -280,7 +280,8 @@ function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
   $idusuario_p = strtoupper(str_replace("-","",$idusuario_p));  
   
   $sqlString  = "SELECT
-      * FROM
+      * 
+      FROM
       $dbname.sac_usuarios
       WHERE 
       UPPER(REPLACE(rut,'-','')) = '$idusuario_p' " ;
@@ -293,6 +294,10 @@ function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
     return NULL;
   } 
 
+  $rs->fields['rut'] = str_replace('.','',$rs->fields['rut']);
+  $rs->fields['rut'] = str_replace('-','',$rs->fields['rut']);
+  $rs->fields['rut'] = strtoupper($rs->fields['rut']);
+  
 
   return $rs->fields ;
 
