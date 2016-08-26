@@ -264,6 +264,18 @@ class Servicios {
     $idmovil    = isset($record_p['imei']) ? trim($record_p['imei']) : NULL ;
 
 
+    $rutusuario = str_replace('.','',$rutusuario);
+    $rutusuario = str_replace('-','',$rutusuario);
+    
+    $rutempresa = str_replace('.','',$rutempresa);
+    $rutempresa = str_replace('-','',$rutempresa);
+    
+
+    $rutusuario  = strtoupper($rutusuario);
+    $rutempresa  = strtoupper($rutempresa);
+    
+    
+
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   
       $description = 'Modulo No Valido' ;
