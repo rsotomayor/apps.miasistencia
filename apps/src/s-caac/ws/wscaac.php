@@ -1,11 +1,10 @@
 <?php
 
-#ini_set('display_errors', 0);
-
+//~ ini_set('display_errors', 0);
 
 require_once ("servicios.php");
-
 require_once ("configuration.php");
+
 set_include_path(get_include_path() . PATH_SEPARATOR . $cscwebPath_g);
 require_once ("dbconn.php");
 $dbconn_g    = new DBConn($dbConfig_g) ;
