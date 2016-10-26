@@ -38,6 +38,13 @@ class DBConn {
         $sqlString = "SET NAMES 'utf8'" ;
         $this->link_a->Execute($sqlString);
       } 
+
+      if ( $this->dbdriver_a == "mysqli" ) {
+        $sqlString = "SET NAMES 'utf8'" ;
+        $this->link_a->Execute($sqlString);
+      }       
+
+      
     } catch (exception $e) { 
       $retcode = -1 ;
     }
@@ -56,6 +63,11 @@ class DBConn {
       $sqlString = "SET AUTOCOMMIT=0; " ;
        $link_p->Execute($sqlString);
     } 
+    
+    if ( $dbConfig_g["driver"] == "mysqli" ) {
+      $sqlString = "SET AUTOCOMMIT=0; " ;
+       $link_p->Execute($sqlString);
+    }     
   }
 
   function completeTrans($link_p) {
@@ -63,7 +75,12 @@ class DBConn {
     if ( $dbConfig_g["driver"] == "mysql" ) {
       $sqlString = "COMMIT; " ;
       $link_p->Execute($sqlString);
-    } 
+    }
+    
+    if ( $dbConfig_g["driver"] == "mysqli" ) {
+      $sqlString = "COMMIT; " ;
+      $link_p->Execute($sqlString);
+    }      
   }
  
   

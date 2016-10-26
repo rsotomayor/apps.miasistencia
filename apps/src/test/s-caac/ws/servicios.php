@@ -386,7 +386,7 @@ class Servicios {
     $ultimoregistro_r = getUltimoRegistroByModulo($idmodulo);
     
     $tsUltimoRegistro = strtotime($ultimoregistro_r['fechahora']);
-    $TMAX_REGISTRO    = 30 ;
+    $TMAX_REGISTRO    = 0 ;
 
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   

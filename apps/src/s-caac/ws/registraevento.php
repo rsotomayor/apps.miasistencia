@@ -717,6 +717,9 @@ function registraEventoMarca(&$record_p) {
   $record['idmodulo'] = isset($record['idmodulo']) ? $record['idmodulo'] : $idacceso ;
   $record['idmovil']  = isset($record['idmovil']) ? $record['idmovil'] : $idacceso ;
 
+
+  $record['app_tipo']    = isset($record_p['app_tipo'])    ? $record_p['app_tipo']    : NULL ;
+  $record['app_version'] = isset($record_p['app_version']) ? $record_p['app_version'] : NULL ;
   //~ $fo = fopen("/tmp/registramarca.log","a+");
   //~ $data = "IDACCESO $idacceso\n";
   //~ fputs($fo,$data);
@@ -726,16 +729,22 @@ function registraEventoMarca(&$record_p) {
     return 1;
   }
 
-  $dummy = getRegistroByModulo($idacceso);
-  if ( $dummy == NULL ) {
-    return 2;
+  if ( $record['app_tipo'] == 'mamovil' ) {
+    $dummy = getRegistroOrganizacion($record['idempresa']);
+    if ( $dummy == NULL ) {
+      return 6;
+    }
+  } else {
+    $dummy = getRegistroByModulo($idacceso);
+    if ( $dummy == NULL ) {
+      return 2;
+    }
   }
 
   $idcliente = $dummy['idcliente'];
 
   if ( $idcliente == NULL ) {
     return 3;
-
   }
 
   $record['tablename'] = $idcliente.'_db.stk_registroeventos';
@@ -776,7 +785,7 @@ function registraEventoMarca(&$record_p) {
   
   $usuario_r  = getRegistroUsuarioByRut($idcliente,$rutusuario);
   $empresa_r  = getRegistroOrganizacion($usuario_r['idorganizacion']);
-  
+
   if ( $password != NULL ) {
     $password_r           = getRegistroUsuarioByPassword($idcliente,$usuario_r['idusuario']);
     if ( $password_r['apassword'] !== $password ) {
