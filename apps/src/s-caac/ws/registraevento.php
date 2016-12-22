@@ -273,10 +273,10 @@ function getRegistroOrganizacion($idorganizacion_p) {
 
 }
 
-function getRegistroUsuarioByRut_($idcliente_p,$idusuario_p) {
+function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
   global $link_g;
   
-  $dbname = $idcliente_p.'_db' ;
+  $dbname      = $idcliente_p.'_db' ;
   $idusuario_p = strtoupper(str_replace("-","",$idusuario_p));  
   
   $sqlString  = "SELECT
@@ -285,8 +285,11 @@ function getRegistroUsuarioByRut_($idcliente_p,$idusuario_p) {
       $dbname.sac_usuarios
       WHERE 
       UPPER(REPLACE(rut,'-','')) = '$idusuario_p' " ;
+      
+      
   $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
 
+  $nombres = $rs->fields['nombres'];
   try {
     $rs = $link_g->Execute($sqlString);
   } catch (exception $e) { 
