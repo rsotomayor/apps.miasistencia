@@ -807,7 +807,7 @@ function registraEventoMarca(&$record_p) {
   }
 
 
-  if ( isset($usuarios_r['nombres']) && isset($usuarios_r['apellidos']) && isset($usuarios_r['email']) ) { 
+  if ( isset($usuario_r['nombres']) && isset($usuario_r['apellidos']) && isset($usuario_r['email']) ) { 
     $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
     $email      = $usuario_r['email'];
     $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
