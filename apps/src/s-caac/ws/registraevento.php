@@ -299,10 +299,13 @@ function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
   $rs->fields['rut'] = strtoupper($rs->fields['rut']);
   
 
-  $rs->fields['idorganizacion'] = str_replace('.','',$rs->fields['idorganizacion']);
-  $rs->fields['idorganizacion'] = str_replace('-','',$rs->fields['idorganizacion']);
-  $rs->fields['idorganizacion'] = strtoupper($rs->fields['idorganizacion']);
-
+  if ( isset($rs->fields['idorganizacion']) ) { 
+    $rs->fields['idorganizacion'] = str_replace('.','',$rs->fields['idorganizacion']);
+    $rs->fields['idorganizacion'] = str_replace('-','',$rs->fields['idorganizacion']);
+    $rs->fields['idorganizacion'] = strtoupper($rs->fields['idorganizacion']);
+  } else {
+    $rs->fields['idorganizacion'] = NULL;
+  }
   
 
   return $rs->fields ;
