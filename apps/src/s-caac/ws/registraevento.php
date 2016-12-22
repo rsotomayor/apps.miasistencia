@@ -803,41 +803,43 @@ function registraEventoMarca(&$record_p) {
     $tzoffset_g = -3;  
   }
   
-  $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
-  $email      = $usuario_r['email'];
-  $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
-  $fechahoragps  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahoragps'])+$tzoffset_g*3600);
-  
-  $record_p ['ticket']     = '---------- CONTROL ASISTENCIA ----------|' ;    
-  $record_p ['ticket']    .= '*** TRABAJADOR ***|' ;    
-  $record_p ['ticket']    .= $nombre.'|' ;    
-  $record_p ['ticket']    .= 'RUT: '.$usuario_r['rut'].'|' ;    
-  $record_p ['ticket']    .= 'EMail: '.$email.'|' ;    
-  $record_p ['ticket']    .= 'Hora: '.$fechahoragps.'|' ;    
-  $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
-  $record_p ['ticket']    .= '*** EMPLEADOR ***|' ;    
-  $record_p ['ticket']    .= $empresa_r['razonsocial'].'|' ;    
-  $record_p ['ticket']    .= 'RUT: '.$empresa_r['rut'].'|' ;    
-  $record_p ['ticket']    .= 'DIRECCION: '.$empresa_r['direccion'].'|' ;    
-  $record_p ['ticket']    .= '*** DATOS ADICIONALES ***|' ;    
-  $record_p ['ticket']    .= 'TRANSACCION: '.$record['idtransaccion'].'|';
-  $record_p ['ticket']    .= 'EVENTO: '.$record['idtipoevento'].'|';
-  $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
-  $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
-  
- 
-  $usuarios_r[] = array(
-                  "idusuario" => $usuario_r['rut'] ,
-                  "to"        => "to" ,
-                  "name"      => $nombre,
-                  "email"     => $email
-                     );
-                           
-  $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
-  $mailBody = str_replace('|','<br />',$record_p['ticket']);
+  if ( $usuario_r != NULL ) {
+    $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
+    $email      = $usuario_r['email'];
+    $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
+    $fechahoragps  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahoragps'])+$tzoffset_g*3600);
+    
+    $record_p ['ticket']     = '---------- CONTROL ASISTENCIA ----------|' ;    
+    $record_p ['ticket']    .= '*** TRABAJADOR ***|' ;    
+    $record_p ['ticket']    .= $nombre.'|' ;    
+    $record_p ['ticket']    .= 'RUT: '.$usuario_r['rut'].'|' ;    
+    $record_p ['ticket']    .= 'EMail: '.$email.'|' ;    
+    $record_p ['ticket']    .= 'Hora: '.$fechahoragps.'|' ;    
+    $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
+    $record_p ['ticket']    .= '*** EMPLEADOR ***|' ;    
+    $record_p ['ticket']    .= $empresa_r['razonsocial'].'|' ;    
+    $record_p ['ticket']    .= 'RUT: '.$empresa_r['rut'].'|' ;    
+    $record_p ['ticket']    .= 'DIRECCION: '.$empresa_r['direccion'].'|' ;    
+    $record_p ['ticket']    .= '*** DATOS ADICIONALES ***|' ;    
+    $record_p ['ticket']    .= 'TRANSACCION: '.$record['idtransaccion'].'|';
+    $record_p ['ticket']    .= 'EVENTO: '.$record['idtipoevento'].'|';
+    $record_p ['ticket']    .= 'MODULO: '.$record['idmodulo'].'|';
+    $record_p ['ticket']    .= 'POSICION: ('.$record['latitud'].','.$record['longitud'].')';    
+    
+   
+    $usuarios_r[] = array(
+                    "idusuario" => $usuario_r['rut'] ,
+                    "to"        => "to" ,
+                    "name"      => $nombre,
+                    "email"     => $email
+                       );
+                             
+    $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
+    $mailBody = str_replace('|','<br />',$record_p['ticket']);
 
-  enviaMail($usuarios_r,$subject,$mailBody);
-
+    enviaMail($usuarios_r,$subject,$mailBody);
+  }
+  
   return $retval;;
 }
 
