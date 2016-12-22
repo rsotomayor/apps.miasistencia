@@ -296,8 +296,6 @@ function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
     return NULL;
   } 
 
-  $nombres = $rs->fields['nombres'];
-
 
   $rs->fields['rut'] = str_replace('.','',$rs->fields['rut']);
   $rs->fields['rut'] = str_replace('-','',$rs->fields['rut']);
@@ -807,8 +805,9 @@ function registraEventoMarca(&$record_p) {
   if ( $tzoffset_g == NULL ) {
     $tzoffset_g = -3;  
   }
-  
-  if ( $usuario_r != NULL ) {
+
+
+  if ( isset($usuarios_r['nombres']) && isset($usuarios_r['apellidos']) && isset($usuarios_r['email']) ) { 
     $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
     $email      = $usuario_r['email'];
     $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
@@ -844,7 +843,7 @@ function registraEventoMarca(&$record_p) {
 
     enviaMail($usuarios_r,$subject,$mailBody);
   }
-  
+    
   return $retval;;
 }
 
