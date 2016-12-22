@@ -289,13 +289,15 @@ function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
       
   $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
 
-  $nombres = $rs->fields['nombres'];
   try {
     $rs = $link_g->Execute($sqlString);
   } catch (exception $e) { 
     //~ echo "Error: , ".$e->msg."<br>";
     return NULL;
   } 
+
+  $nombres = $rs->fields['nombres'];
+
 
   $rs->fields['rut'] = str_replace('.','',$rs->fields['rut']);
   $rs->fields['rut'] = str_replace('-','',$rs->fields['rut']);
