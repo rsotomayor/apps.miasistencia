@@ -273,7 +273,7 @@ function getRegistroOrganizacion($idorganizacion_p) {
 
 }
 
-function getRegistroUsuarioByRut($idcliente_p,$idusuario_p) {
+function getRegistroUsuarioByRut_($idcliente_p,$idusuario_p) {
   global $link_g;
   
   $dbname = $idcliente_p.'_db' ;
