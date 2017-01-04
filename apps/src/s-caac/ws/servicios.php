@@ -382,6 +382,7 @@ class Servicios {
     $rutempresa  = strtoupper($rutempresa);
     
     
+    $passwordrut = "sha1:".sha1($rutusuario);
     
     $ultimoregistro_r = getUltimoRegistroByModulo($idmodulo);
     
@@ -415,11 +416,12 @@ class Servicios {
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
       $response = "KO.EMAILNOREGISTRADO";      
       $description = 'Email No Registrado' ;      
-    } else if ( ($password_r = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) == NULL ) {
-      $response = "KO.PWDNOTFOUND";      
-      $description = 'Usuario o contraseña no registrada' ;
-    } else if ( $password_r['apassword'] !== $password ) {
-      $response    = "KO.PWDWRONG";
+    //~ } else if ( ($password_r = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) == NULL ) {
+      //~ $response = "KO.PWDNOTFOUND";      
+      //~ $description = 'Usuario o contraseña no registrada' ;
+    } else if ( $password !== $passwordrut  ) {
+    //~ } else if ( $password_r['apassword'] !== $password  ) {
+      $response    = "KO.PWDWRONG [".$password."] [".$passwordrut."] ";
       $description = 'Contraseña Incorrecta' ;
     } else if ( (time() - $tsUltimoRegistro) < $TMAX_REGISTRO*60)  {
       $deltaT       = (time() - $tsUltimoRegistro)/60;
