@@ -411,8 +411,16 @@ function registraAcceso(&$record_p) {
     $record_p['idtransaccion'] = 'ENTRADA';
   } else if ( $idio == 'S' ) {
     $record_p['idtransaccion'] = 'SALIDA';
+  } else if ( $idio == '1' ) {
+    $record_p['idtransaccion'] = 'ENTRAYECTO';
+  } else if ( $idio == '2' ) {
+    $record_p['idtransaccion'] = 'ENESPERA';
+  } else if ( $idio == '3' ) {
+    $record_p['idtransaccion'] = 'ENTRABAJO';
+  } else if ( $idio == '4' ) {
+    $record_p['idtransaccion'] = 'ENTIEMPOMUERTO';
   } else {
-    $record_p['idtransaccion'] = 'NOTKNOWN';
+    $record_p['idtransaccion'] = 'NOTKNOWN_'.$idio;
   }
 
   $sqlString = "INSERT INTO $tablename(
@@ -794,10 +802,10 @@ function registraEventoMarca(&$record_p) {
 
   if ( $password != NULL ) {
     $password_r           = getRegistroUsuarioByPassword($idcliente,$usuario_r['idusuario']);
-    if ( $password_r['apassword'] !== $password ) {
-      $record_p ['ticket']  = "Contraseña incorrecta ($idcliente,$rutusuario) " ;
-      return 5;
-    }
+//    if ( $password_r['apassword'] !== $password  ) {
+//      $record_p ['ticket']  = "Contraseña incorrecta ($idcliente,$rutusuario) " ;
+//      return 5;
+//    }
   }
   
   global $tzoffset_g;
@@ -840,6 +848,9 @@ function registraEventoMarca(&$record_p) {
                              
     $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
     $mailBody = str_replace('|','<br />',$record_p['ticket']);
+   
+
+    $record_p ['ticket']    = 'REGISTRO '.$record['idtransaccion'].' OK';
 
     enviaMail($usuarios_r,$subject,$mailBody);
   }
