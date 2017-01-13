@@ -600,7 +600,21 @@ function registraEvento($xmldata_p) {
   switch ( $record['idevento'] ) {
     case 'A':
       $record['idevento']       = 'REPORT.ACCESO' ;
-      $record['idestado']       = ($idio == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
+      if ( $idio == 'E' ) {
+         $record['idestado'] = 'ENTRADA';
+      } else if ( $idio == 'S' ) {
+         $record['idestado'] = 'SALIDA';
+      } else if ( $idio == '1' ) {
+         $record['idestado'] = 'ENTRAYECTO';
+      } else if ( $idio == '2' ) {
+         $record['idestado'] = 'ENESPERA';
+      } else if ( $idio == '3' ) {
+         $record['idestado'] = 'ENTRABAJO';
+      } else if ( $idio == '4' ) {
+         $record['idestado'] = 'ENTIEMPOMUERTO';
+      } else {
+         $record['idestado'] = 'NOTKNOWN_'.$idio;
+      }
       break;
     case 'I':
       $record['idevento']        = 'INICIO.VIAJE' ;
@@ -708,7 +722,29 @@ function registraEventoMarca(&$record_p) {
   switch ( $record['idevento'] ) {
     case 'A':
       $record['idevento']       = 'REPORT.ACCESO' ;
-      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
+      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA01'; 
+      $idio = $record['idio'];
+      if ( $idio == 'E' ) {
+        $record['idestado'] = 'ENTRADA';
+      } else if ( $idio == 'S' ) {
+        $record['idestado'] = 'SALIDA';
+      } else if ( $idio == '1' ) {
+        $record['idestado'] = 'ENTRAYECTO';
+      } else if ( $idio == '2' ) {
+        $record['idestado'] = 'ENESPERA';
+      } else if ( $idio == '3' ) {
+        $record['idestado'] = 'ENTRABAJO';
+      } else if ( $idio == '4' ) {
+        $record['idestado'] = 'ENTIEMPOMUERTO';
+      } else {
+        $record['idestado'] = 'NOTKNOWN_'.$idio;
+      }
+      break;
+    case 'I':
+      $record['idevento']        = 'INICIO.VIAJE' ;
+      break;
+    case 'T':
+      $record['idevento']        = 'TERMINO.VIAJE' ;
       break;
     case 'I':
       $record['idevento']        = 'INICIO.VIAJE' ;
