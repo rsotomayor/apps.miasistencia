@@ -381,6 +381,7 @@ class Servicios {
     $rutusuario  = strtoupper($rutusuario);
     $rutempresa  = strtoupper($rutempresa);
     
+
     
     $passwordrut = "sha1:".sha1($rutusuario);
     
@@ -388,6 +389,14 @@ class Servicios {
     
     $tsUltimoRegistro = strtotime($ultimoregistro_r['fechahora']);
     $TMAX_REGISTRO    = 0 ;
+    
+    $organizacion_r = getRegistroOrganizacion($rutempresa);
+    $usuario_r      = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario));    
+    
+    $password_r      = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) ;
+    $passwordusuario = $password_r['apassword'];
+
+
 
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   
@@ -404,10 +413,10 @@ class Servicios {
     } else if ( validaMail($email) == false ) {
       $response = "KO.EMAIL";      
       $description = 'Correo Electrónico incorrecto' ;
-    } else if ( ($organizacion_r = getRegistroOrganizacion($rutempresa)) == NULL ) {
+    } else if ( $organizacion_r == NULL ) {
       $response = "KO.EMPNOTFOUND";      
       $description = 'Empresa no encontrada' ;
-    } else if ( ($usuario_r = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario)) == NULL ) {
+    } else if ( ($usuario_r == NULL ) {
       $response = "KO.USRNOTFOUND ";      
       $description = 'Usuario ['.$rutusuario.'] no encontrado en cliente '.$organizacion_r['idcliente'] ;
     } else if ( $usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
@@ -416,11 +425,7 @@ class Servicios {
     } else if ( !($usuario_r['email'] == $email || $usuario_r['email2'] == $email) ) {
       $response = "KO.EMAILNOREGISTRADO";      
       $description = 'Email No Registrado' ;      
-    //~ } else if ( ($password_r = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) == NULL ) {
-      //~ $response = "KO.PWDNOTFOUND";      
-      //~ $description = 'Usuario o contraseña no registrada' ;
-    } else if ( $password !== $passwordrut  ) {
-    //~ } else if ( $password_r['apassword'] !== $password  ) {
+    } else if ( ($password !== $passwordrut) && ($password !== $password_r['apassword']) ) {
       $response    = "KO.PWDWRONG [".$password."] [".$passwordrut."] ";
       $description = 'Contraseña Incorrecta' ;
     } else if ( (time() - $tsUltimoRegistro) < $TMAX_REGISTRO*60)  {
