@@ -154,7 +154,8 @@ function validaRut($str_p) {
       if ( $dv == $dummy[1] ) {
         $retval = $rut."-".$dv; 
       } else {
-        return NULL ;
+        $retval = $rut."-".$dv; 
+        //return NULL ;
       }
     }
          
@@ -418,7 +419,7 @@ function registraAcceso(&$record_p) {
   } else if ( $idio == '3' ) {
     $record_p['idtransaccion'] = 'ENTRABAJO';
   } else if ( $idio == '4' ) {
-    $record_p['idtransaccion'] = 'ENTIEMPOMUERTO';
+    $record_p['idtransaccion'] = 'ENPAUSA';
   } else {
     $record_p['idtransaccion'] = 'NOTKNOWN_'.$idio;
   }
@@ -611,7 +612,7 @@ function registraEvento($xmldata_p) {
       } else if ( $idio == '3' ) {
          $record['idestado'] = 'ENTRABAJO';
       } else if ( $idio == '4' ) {
-         $record['idestado'] = 'ENTIEMPOMUERTO';
+         $record['idestado'] = 'ENPAUSA';
       } else {
          $record['idestado'] = 'NOTKNOWN_'.$idio;
       }
@@ -735,7 +736,7 @@ function registraEventoMarca(&$record_p) {
       } else if ( $idio == '3' ) {
         $record['idestado'] = 'ENTRABAJO';
       } else if ( $idio == '4' ) {
-        $record['idestado'] = 'ENTIEMPOMUERTO';
+        $record['idestado'] = 'ENPAUSA';
       } else {
         $record['idestado'] = 'NOTKNOWN_'.$idio;
       }
