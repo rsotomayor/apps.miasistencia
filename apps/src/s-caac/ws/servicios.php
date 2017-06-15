@@ -324,7 +324,7 @@ class Servicios {
       $token    = sha1('cambiapasswordmiasistencia'.$idusuario.'savtec');
 
       $mensaje  = "Estimado Usuario<br />";
-      $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?mod=s-caac&class=pwd&accion=$token&id=$idusuario";
+      $mensaje .= "Favor dirigase a http://$idcliente.miasistencia.cl/apps/index.php?mod=s-caac&class=pwd&token=$token&id=$idusuario";
       $mensaje .= "<br /><br /><br />";
       $mensaje .= "Atentos saludos<br />";
       
