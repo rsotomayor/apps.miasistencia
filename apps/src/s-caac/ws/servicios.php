@@ -391,9 +391,9 @@ class Servicios {
     $TMAX_REGISTRO    = 0 ;
     
     $organizacion_r = getRegistroOrganizacion($rutempresa);
-    $usuario_r      = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario));    
+    $usuario_r      = getRegistroUsuarioByRut($organizacion_r['idcliente'],$rutusuario);    
     
-    $password_r      = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario'])) ;
+    $password_r      = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario']) ;
     $passwordusuario = $password_r['apassword'];
 
 
