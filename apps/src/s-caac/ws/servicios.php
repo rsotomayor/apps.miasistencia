@@ -416,7 +416,7 @@ class Servicios {
     } else if ( $organizacion_r == NULL ) {
       $response = "KO.EMPNOTFOUND";      
       $description = 'Empresa no encontrada' ;
-    } else if ( ($usuario_r == NULL ) {
+    } else if ( $usuario_r == NULL ) {
       $response = "KO.USRNOTFOUND ";      
       $description = 'Usuario ['.$rutusuario.'] no encontrado en cliente '.$organizacion_r['idcliente'] ;
     } else if ( $usuario_r['idorganizacion'] != $organizacion_r['rut'] ) {
