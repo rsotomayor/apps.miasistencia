@@ -341,6 +341,130 @@ function getRegistroUsuarioByPassword($idcliente_p,$idusuario_p) {
 
 
 
+function publicaAcceso(&$record_p) {
+
+  global $link_g;
+  $retval = 0 ;
+
+  date_default_timezone_set('UTC');
+
+  $ipaddress       = isset($_SERVER['REMOTE_ADDR'])    ? $_SERVER['REMOTE_ADDR'] : NULL ;
+  $idusuario       = isset($record_p['idusuario'])     ? $record_p['idusuario'] : NULL;
+  $idevento        = isset($record_p['idevento'])      ? $record_p['idevento'] : 'REPORT.ESTADO' ;
+  $idtipoevento    = isset($record_p['idtipoevento'])  ? $record_p['idtipoevento'] : NULL ;
+  $idincidente     = isset($record_p['idincidente'])   ? $record_p['idincidente'] : NULL ;  ;
+  $fechahoraserver = strftime('%Y-%m-%d %H:%M:%S',time());
+
+  $fechahora       = isset($record_p['fechahora'])     ? $record_p['fechahora'] : NULL ;  ;
+  $ts              = ($fechahora != NULL ) ? strtotime($fechahora) : time();
+
+  $tsgps           = isset($record_p['tsgps'])      ? $record_p['tsgps'] : NULL ;
+  if ( $tsgps != NULL ) {
+    $fechahoragps    = strftime('%Y-%m-%d %H:%M:%S',(int)$tsgps);
+  } else {
+    $fechahoragps    = NULL ;
+  }
+
+
+  $idacceso        = isset($record_p['idacceso'])        ? $record_p['idacceso'] : NULL ;
+  $idmodulo        = isset($record_p['idmodulo'])        ? $record_p['idmodulo'] : NULL ;
+  $idmovil         = isset($record_p['idmovil'])         ? $record_p['idmovil'] : NULL ;
+  $latitud         = isset($record_p['latitud'])         ? $record_p['latitud'] : NULL ;
+  $longitud        = isset($record_p['longitud'])        ? $record_p['longitud'] : NULL ;
+  $velocidad       = isset($record_p['velocidad'])       ? $record_p['velocidad'] : NULL ;
+  $altura          = isset($record_p['altura'])          ? $record_p['altura'] : NULL ;
+  $rumbo           = isset($record_p['rumbo'])           ? $record_p['rumbo'] : NULL ;
+
+  $idresultado     = isset($record_p['idresultado'])      ? $record_p['idresultado'] : NULL ;
+  $scorehuella     = isset($record_p['score'])           ? $record_p['score'] : NULL ;
+  $idfinger        = isset($record_p['idfinger'])        ? $record_p['idfinger'] : NULL ;
+  $idestado        = isset($record_p['idestado'])        ? $record_p['idestado'] : NULL ;
+  $nota            = isset($record_p['nota'])            ? $record_p['nota'] : NULL ;
+
+
+  $latitud          = str_replace (",",".", $latitud);
+  $longitud         = str_replace (",",".", $longitud);
+  $altura           = str_replace (",",".", $altura);  
+  $rumbo            = str_replace (",",".", $rumbo); 
+  $velocidad        = str_replace (",",".", $velocidad);  
+
+  $szTemperature   = isset($record_p['temp'])     ? $record_p['temp'] : NULL ;
+  if ( $szTemperature != NULL ) {
+    sscanf($szTemperature, "%f%s", $temperature,$degree);
+  } else {
+    $temperature = NULL ;
+    $degree = "F" ;
+  }
+
+  $id              = sha1($idmodulo.'-'.$idevento.'-'.$idusuario.'-'.$idestado.'-'.$fechahora);
+  $hash_sum        = isset($record_p['hash_sum'])        ? $record_p['hash_sum'] : NULL ;   
+  $tablename       = $record_p['tablename'];
+  
+  $record_p['fechahora']     = $fechahora;
+  $record_p['fechahoragps']  = $fechahoragps;
+
+  if ( $tsgps != NULL ) {
+    $fechahora = $fechahoragps;
+  }
+  
+
+  
+  $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
+  
+  if ( $idio == 'E' ) {
+    $record_p['idtransaccion'] = 'ENTRADA';
+  } else if ( $idio == 'S' ) {
+    $record_p['idtransaccion'] = 'SALIDA';
+  } else if ( $idio == '1' ) {
+    $record_p['idtransaccion'] = 'ENTRAYECTO';
+  } else if ( $idio == '2' ) {
+    $record_p['idtransaccion'] = 'ENESPERA';
+  } else if ( $idio == '3' ) {
+    $record_p['idtransaccion'] = 'ENTRABAJO';
+  } else if ( $idio == '4' ) {
+    $record_p['idtransaccion'] = 'ENPAUSA';
+  } else {
+    $record_p['idtransaccion'] = 'NOTKNOWN_'.$idio;
+  }
+
+
+  define('BROKER', 'iot.mitelemetria.cl');
+  define('PORT', 1883);
+  $client_id = "pubclient_".rand(0,100);
+
+  $username = "mqtt";
+  $password = "mqtt";
+  
+  $flagconnect = true ;
+  try {
+    $client = new Mosquitto\Client($client_id);
+    $client->setCredentials($username,$password);
+    $client->connect(BROKER, PORT, 10);
+  } catch (Exception $e) {
+    //~ echo $e;
+    $flagconnect = false ;
+  }
+
+  if ( $flagconnect ) {
+
+    $topic   = "savtec/sensor/testgps/$idmodulo";
+    $payload = '{"IDMODULO":"'.$idmodulo.'","LAT":'.$latitud.',"LON":'.$longitud.'}';
+    $client->publish($topic, $payload, 1, false);
+
+
+
+  }
+    
+
+
+
+}
+
+
+
+
+
+
 function registraAcceso(&$record_p) {
   global $link_g;
   $retval = 0 ;
@@ -800,7 +924,9 @@ function registraEventoMarca(&$record_p) {
 
   $record['tablename'] = $idcliente.'_db.stk_registroeventos';
 
+  $retcode = publicaAcceso($record) ;
   $retcode = registraAcceso($record) ;
+
   if ( !( $retcode == 0 || $retcode == 1 ) ) {
     return 4;
   }
