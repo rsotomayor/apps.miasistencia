@@ -396,8 +396,62 @@ class Servicios {
     $password_r      = getRegistroUsuarioByPassword($organizacion_r['idcliente'],$usuario_r['idusuario']) ;
     $passwordusuario = $password_r['apassword'];
 
+    
+    if ( strlen($rutusuario) < 6 ) {
+      $response = "KO.RUTUSUARIO";      
+    } else if ( strlen($rutempresa) < 6 ) {
+      $response = "KO.RUTEMPRESA";      
+    } else if ( validaMail($email) == false ) {
+      $response = "KO.EMAIL";      
+      $description = 'Correo Electrónico incorrecto' ;
+    } else {
+      $response     = "OK";  
+
+      $description  = 'Usuario Registrado|';
+
+      if ( $usuario_r != NULL ) {
+        $usuario_r['apellidos']  = $usuario_r['nombres'] = $rutusuario ;
+        $description            .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
+        $description            .= 'Rut Empresa Usuario: '.$usuario_r['idorganizacion'].'|';
+      } else {
+        $description .= 'RUT: '.$rutusuario.'|';
+      }
 
 
+      if ( $organizacion_r != NULL ) {
+        $description .= '================== EMPRESA ==================|';
+        $description .= 'Rut Empresa: '.$organizacion_r['rut']."|";
+        $description .= 'Razon Social: '.$organizacion_r['razonsocial']."|";
+        $description .= 'Nombre Fantasia: '.$organizacion_r['nombrefantasia']."|";
+        $description .= 'Dirección: '.$organizacion_r['direccion']."|";
+        $description .= 'Telefono: '.$organizacion_r['telefono']."|";
+        $description .= 'Email Empresa: '.$organizacion_r['email'];
+      } else {
+        $description .= '================== EMPRESA ==================|';
+        $description .= 'Rut Empresa: '.$rutempresa."|";
+      }
+
+
+      if ( $usuario_r != NULL && $organizacion_r != NULL ) {
+        $myparam['idmodulo']         = $idmodulo ;
+        $myparam['idcliente']        = $organizacion_r['idcliente'] ;
+        $myparam['fechahora']        = strftime('%Y-%m-%d %H:%M:%S',time());
+        $myparam['rutusuario']       = $usuario_r['rut'];
+        $myparam['rutorganizacion']  = $organizacion_r['rut'];
+        $myparam['email']            = $usuario_r['email'] ;
+
+      
+        if ( actualizaModulo($myparam) != 0 ) {
+          $response     = "KO.ACTMODULO";
+          $description  = $myparam['msg']; 
+        }
+        
+        
+      }
+      
+    }
+
+/*
     if ( $idmodulo == NULL ) {
       $response = "KO.IDMODULO";   
       $description = 'Modulo No Valido' ;
@@ -462,7 +516,7 @@ class Servicios {
       }
 
     }
-
+*/
 
 
     //~ $description = 'En desarrollo ('.strftime('%Y-%m-%d %H:%M:%S',time()).')' ;
