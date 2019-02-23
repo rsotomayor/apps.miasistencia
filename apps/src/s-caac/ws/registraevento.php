@@ -831,10 +831,22 @@ function registraEventoMarca(&$record_p) {
   if ( $xmldata == NULL ) {
     return $retval ;
   }
-  $search = array("\0", "\x01", "\x02", "\x03", "\x04", "\x05","\x06", "\x07", "\x08", "\x0b", "\x0c", "\x0e", "\x0f");  
-  $xmldata = str_replace($search, '', $xmldata);  
+  
+  set_error_handler(function($errno, $errstr, $errfile, $errline) {  
+      throw new Exception($errstr, $errno);  
+  });  
 
-  $xml = simplexml_load_string($xmldata);
+  try {  
+    $search = array("\0", "\x01", "\x02", "\x03", "\x04", "\x05","\x06", "\x07", "\x08", "\x0b", "\x0c", "\x0e", "\x0f");  
+    $xmldata = str_replace($search, '', $xmldata);  
+    $xml = simplexml_load_string($xmldata);
+    restore_error_handler();
+  } catch(Exception $e) {  
+    restore_error_handler();  
+    return $retval;
+  }  
+  
+  
 
   $fo = fopen("/tmp/registramarca.log","a+");
   fputs($fo,"==================================================================\n");
