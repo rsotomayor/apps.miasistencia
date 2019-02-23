@@ -851,15 +851,14 @@ function registraEventoMarca(&$record_p) {
 
   $fo = fopen("/tmp/registramarca.log","a+");
   fputs($fo,"==================================================================\n");
-  //~ fputs($fo,print_r($xml));
   
-  //~ if ( is_array($xml) ) {
+  if ( $xml != NULL ) {
     foreach ( $xml as $key => $valor ) {
       $data = "KEY $key VALOR $valor\n";
       fputs($fo,$data);
       $record[$key] = $valor ;
     }
-  //~ }
+  }
   fclose($fo);
 
 
@@ -992,13 +991,14 @@ function registraEventoMarca(&$record_p) {
   $usuario_r  = getRegistroUsuarioByRut($idcliente,$rutusuario);
   $empresa_r  = getRegistroOrganizacion($usuario_r['idorganizacion']);
 
-  if ( $password != NULL ) {
-    $password_r           = getRegistroUsuarioByPassword($idcliente,$usuario_r['idusuario']);
-//    if ( $password_r['apassword'] !== $password  ) {
-//      $record_p ['ticket']  = "Contraseña incorrecta ($idcliente,$rutusuario) " ;
-//      return 5;
-//    }
-  }
+
+  //~ if ( $password != NULL ) {
+    //~ $password_r           = getRegistroUsuarioByPassword($idcliente,$usuario_r['idusuario']);
+//~ //    if ( $password_r['apassword'] !== $password  ) {
+//~ //      $record_p ['ticket']  = "Contraseña incorrecta ($idcliente,$rutusuario) " ;
+//~ //      return 5;
+//~ //    }
+  //~ }
   
   global $tzoffset_g;
   
