@@ -845,7 +845,6 @@ function registraEventoMarca(&$record_p) {
     return $retval;
   }  
   
-  return $retval;
   
 
   $fo = fopen("/tmp/registramarca.log","a+");
@@ -858,6 +857,9 @@ function registraEventoMarca(&$record_p) {
     }
   }
   fclose($fo);
+
+  return $retval;
+
 
   if ( !isset($record['idevento']) ) {
     return -2;
