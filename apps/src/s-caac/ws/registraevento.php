@@ -866,6 +866,8 @@ function registraEventoMarca(&$record_p) {
     return -2;
   }
 
+  return $retval;
+
 
   switch ( $record['idevento'] ) {
     case 'A':
@@ -941,7 +943,6 @@ function registraEventoMarca(&$record_p) {
   }
 
 
-  return $retval;
   
   $idcliente = $dummy['idcliente'];
 
