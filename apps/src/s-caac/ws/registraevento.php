@@ -1046,6 +1046,16 @@ function registraEventoMarca(&$record_p) {
     if ( $record['idestado'] == 'ENTRADA' && $record['idestado'] = 'SALIDA' ) {
       enviaMail($usuarios_r,$subject,$mailBody);
     }
+  } else {
+    $fechahora  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahora'])+$tzoffset_g*3600);
+    $fechahoragps  = strftime('%d-%m-%Y %H:%M:%S',strtotime($record['fechahoragps'])+$tzoffset_g*3600);
+
+    $record_p ['ticket']     = '---------- CONTROL ASISTENCIA ----------|' ;    
+    $record_p ['ticket']    .= '*** TRABAJADOR ***|' ;    
+    $record_p ['ticket']    .= 'RUT: '.$rutusuario.'|' ;    
+    $record_p ['ticket']    .= 'Hora: '.$fechahoragps.'|' ;    
+    $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
+
   }
     
   return $retval;;
