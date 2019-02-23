@@ -1056,6 +1056,26 @@ function registraEventoMarca(&$record_p) {
     $record_p ['ticket']    .= 'Hora: '.$fechahoragps.'|' ;    
     $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
 
+
+    //~ $usuarios_r[] = array(
+                    //~ "idusuario" => $usuario_r['rut'] ,
+                    //~ "to"        => "to" ,
+                    //~ "name"      => $nombre,
+                    //~ "email"     => $email
+                       //~ );
+                             
+    //~ $subject  = "[MIASISTENCIA] Marca asistencia $fechahora";
+    //~ $mailBody = str_replace('|','<br />',$record_p['ticket']);
+   
+
+    //~ $record_p ['ticket']    = 'REGISTRO '.$record['idtransaccion'].' OK';
+
+    //~ if ( $record['idestado'] == 'ENTRADA' && $record['idestado'] = 'SALIDA' ) {
+      //~ enviaMail($usuarios_r,$subject,$mailBody);
+    //~ }
+
+    $record_p ['ticket']    = 'REGISTRO '.$record['idtransaccion'].' OK';
+
   }
     
   return $retval;;
