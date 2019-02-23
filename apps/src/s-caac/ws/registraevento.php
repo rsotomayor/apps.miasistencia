@@ -827,6 +827,11 @@ function registraEventoMarca(&$record_p) {
   $idacceso = NULL;
   
   $xmldata = $record_p['xmldata'];
+  
+  if ( $xmldata == NULL ) {
+    return $retval ;
+  }
+
 
   $xml = simplexml_load_string($xmldata);
 
