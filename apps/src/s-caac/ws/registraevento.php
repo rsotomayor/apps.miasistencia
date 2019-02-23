@@ -832,10 +832,12 @@ function registraEventoMarca(&$record_p) {
 
   $fo = fopen("/tmp/registramarca.log","a+");
   fputs($fo,"==================================================================\n");
-  foreach ( $xml as $key => $valor ) {
-    $data = "KEY $key VALOR $valor\n";
-    fputs($fo,$data);
-    $record[$key] = $valor ;
+  if ( is_array($xml) ) {
+    foreach ( $xml as $key => $valor ) {
+      $data = "KEY $key VALOR $valor\n";
+      fputs($fo,$data);
+      $record[$key] = $valor ;
+    }
   }
   fclose($fo);
 
@@ -957,6 +959,7 @@ function registraEventoMarca(&$record_p) {
 #KEY flagenviado  VALOR 0
 
   //~ $record_p ['ticket'] = 'NO TICKET DISPONIBLE';
+  
   
   $rutusuario = isset($record['idusuario']) ? trim($record['idusuario']) : NULL ;
   $password   = isset($record['password']) ? trim($record['password']) : NULL ;
