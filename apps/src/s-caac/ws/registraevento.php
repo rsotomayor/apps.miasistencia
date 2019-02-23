@@ -831,19 +831,21 @@ function registraEventoMarca(&$record_p) {
     return $retval ;
   }
   
-  set_error_handler(function($errno, $errstr, $errfile, $errline) {  
-      throw new Exception($errstr, $errno);  
-  });  
+  //~ set_error_handler(function($errno, $errstr, $errfile, $errline) {  
+      //~ throw new Exception($errstr, $errno);  
+  //~ });  
 
-  try {  
-    $search = array("\0", "\x01", "\x02", "\x03", "\x04", "\x05","\x06", "\x07", "\x08", "\x0b", "\x0c", "\x0e", "\x0f");  
-    $xmldata = str_replace($search, '', $xmldata);  
-    $xml = simplexml_load_string($xmldata);
-    restore_error_handler();
-  } catch(Exception $e) {  
-    restore_error_handler();  
-    return $retval;
-  }  
+  //~ try {  
+    //~ $search = array("\0", "\x01", "\x02", "\x03", "\x04", "\x05","\x06", "\x07", "\x08", "\x0b", "\x0c", "\x0e", "\x0f");  
+    //~ $xmldata = str_replace($search, '', $xmldata);  
+    //~ $xml = simplexml_load_string($xmldata);
+    //~ restore_error_handler();
+  //~ } catch(Exception $e) {  
+    //~ restore_error_handler();  
+    //~ return $retval;
+  //~ }  
+
+  $xml = simplexml_load_string($xmldata);
   
   
 
