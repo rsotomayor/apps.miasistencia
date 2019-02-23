@@ -826,7 +826,7 @@ function registraEventoMarca(&$record_p) {
   $record_p ['ticket'] = 'NO TICKET DISPONIBLE';
   $idacceso = NULL;
 
-  return $retval;
+
 
   
   $xmldata = $record_p['xmldata'];
@@ -940,6 +940,9 @@ function registraEventoMarca(&$record_p) {
     }
   }
 
+
+  return $retval;
+  
   $idcliente = $dummy['idcliente'];
 
   if ( $idcliente == NULL ) {
