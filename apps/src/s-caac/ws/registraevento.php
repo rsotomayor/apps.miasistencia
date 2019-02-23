@@ -851,7 +851,7 @@ function registraEventoMarca(&$record_p) {
 
   $fo = fopen("/tmp/registramarca.log","a+");
   fputs($fo,"==================================================================\n");
-  fputs($fo,$xml);
+  fputs($fo,$xmldata);
   
   if ( is_array($xml) ) {
     foreach ( $xml as $key => $valor ) {
