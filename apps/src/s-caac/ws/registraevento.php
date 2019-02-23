@@ -860,8 +860,6 @@ function registraEventoMarca(&$record_p) {
 
 
   if ( !isset($record['idevento']) ) {
-    return $retval;
-
     return -2;
   }
 
