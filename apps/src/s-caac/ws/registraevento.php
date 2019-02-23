@@ -847,7 +847,7 @@ function registraEventoMarca(&$record_p) {
   switch ( $record['idevento'] ) {
     case 'A':
       $record['idevento']       = 'REPORT.ACCESO' ;
-      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA01'; 
+      $record['idestado']       = ($record['idio'] == 'E' ) ? 'ENTRADA' : 'SALIDA'; 
       $idio = $record['idio'];
       if ( $idio == 'E' ) {
         $record['idestado'] = 'ENTRADA';
@@ -906,9 +906,10 @@ function registraEventoMarca(&$record_p) {
 
   if ( $record['app_tipo'] == 'mamovil' ) {
     $dummy = getRegistroOrganizacion($record['idempresa']);
-    if ( $dummy == NULL ) {
-      return 6;
-    }
+    //~ if ( $dummy == NULL ) {
+      //~ return 6;
+    //~ }
+    
   } else {
     $dummy = getRegistroByModulo($idacceso);
     if ( $dummy == NULL ) {
@@ -919,7 +920,7 @@ function registraEventoMarca(&$record_p) {
   $idcliente = $dummy['idcliente'];
 
   if ( $idcliente == NULL ) {
-    return 3;
+    $idcliente = 'ma';
   }
 
   $record['tablename'] = $idcliente.'_db.stk_registroeventos';
@@ -977,7 +978,6 @@ function registraEventoMarca(&$record_p) {
     $tzoffset_g = -3;  
   }
 
-
   if ( isset($usuario_r['nombres']) && isset($usuario_r['apellidos']) && isset($usuario_r['email']) ) { 
     $nombre     = $usuario_r['nombres'].' '.$usuario_r['apellidos'] ;
     $email      = $usuario_r['email'];
@@ -1015,7 +1015,9 @@ function registraEventoMarca(&$record_p) {
 
     $record_p ['ticket']    = 'REGISTRO '.$record['idtransaccion'].' OK';
 
-    enviaMail($usuarios_r,$subject,$mailBody);
+    if ( $record['idestado'] == 'ENTRADA' && $record['idestado'] = 'SALIDA' ) {
+      enviaMail($usuarios_r,$subject,$mailBody);
+    }
   }
     
   return $retval;;
