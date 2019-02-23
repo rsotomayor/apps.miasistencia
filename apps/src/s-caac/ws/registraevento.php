@@ -858,13 +858,13 @@ function registraEventoMarca(&$record_p) {
   }
   fclose($fo);
 
-  return $retval;
 
 
   if ( !isset($record['idevento']) ) {
     return -2;
   }
 
+  return $retval;
 
 
   switch ( $record['idevento'] ) {
