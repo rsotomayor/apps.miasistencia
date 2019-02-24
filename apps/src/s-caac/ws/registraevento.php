@@ -474,6 +474,7 @@ function publicaAcceso(&$record_p) {
     $payload .= '"ADDRESS":"SIN DIRECCION",';
     $payload .= '"FECHA":"'.$fechahoragps.'",';
     $payload .= '"FECHAL":"'.$fechahoragps.'",';
+    $payload .= '"NOTA":"'.$nota.'",';
     $payload .= '"TIME":'.$tsgps;
     $payload .= '}';
 
