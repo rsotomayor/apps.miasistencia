@@ -447,8 +447,28 @@ function publicaAcceso(&$record_p) {
 
   if ( $flagconnect ) {
 
-    $topic   = "savtec/sensor/testgps/$idmodulo";
-    $payload = '{"IDMODULO":"'.$idmodulo.'","LAT":'.$latitud.',"LON":'.$longitud.'}';
+//~ Topic: savtec/sensor/gps/868789020336771
+//~ Payload[{"MSG":"GTFRI","RSP":"+RESP","ACU":1,"SPD":85.6,"AZM":123,"ALT":170.7,"LON":-71.505315,"LAT":-32.99811,"ADDRESS":"SIN DIRECCION","FECHA":"2019-02-23 17:02:20","FECHAL":"2019-02-23 14:02:20","TIME":1550941340}]
+//~ Topic: savtec/sensor/gps/868789020336771
+//~ Payload[{"MSG":"GTFRI","RSP":"+RESP","ACU":1,"SPD":85.6,"AZM":123,"ALT":170.7,"LON":-71.505315,"LAT":-32.99811,"ADDRESS":"SIN DIRECCION","FECHA":"2019-02-23 17:02:20","FECHAL":"2019-02-23 14:02:20","TIME":1550941340}]
+
+    $topic    = "savtec/sensor/gps/$idmodulo";
+
+    $payload  = '{';
+    $payload .= '"MSG":"GTFRI",';
+    $payload .= '"ACU":1,';
+    $payload .= '"SPD":'.$velocidad.',';
+    $payload .= '"AZM":'.$rumbo.',';
+    $payload .= '"ALT":'.$altura.',';
+    $payload .= '"LON":'.$longitud.',';
+    $payload .= '"LAT":'.$latitud.',';
+    $payload .= '"ADDRESS":"SIN DIRECCION",';
+    $payload .= '"FECHA":"'.$fechahoragps.'",';
+    $payload .= '"FECHAL":"'.$fechahoragps.'",';
+    $payload .= '"TIME":'.$tsgps;
+    $payload .= '}';
+
+
     $client->publish($topic, $payload, 1, false);
 
 
