@@ -410,21 +410,29 @@ function publicaAcceso(&$record_p) {
 
   
   $idio = isset($record_p['idio']) ? $record_p['idio'] : 'E' ;
+  $idevento = 'GTFRI';
   
   if ( $idio == 'E' ) {
     $record_p['idtransaccion'] = 'ENTRADA';
+    $idevento                  = 'MAENT';
   } else if ( $idio == 'S' ) {
     $record_p['idtransaccion'] = 'SALIDA';
+    $idevento                  = 'MASAL';
   } else if ( $idio == '1' ) {
     $record_p['idtransaccion'] = 'ENTRAYECTO';
+    $idevento                  = 'MATRY';
   } else if ( $idio == '2' ) {
     $record_p['idtransaccion'] = 'ENESPERA';
+    $idevento                  = 'MAESP';
   } else if ( $idio == '3' ) {
     $record_p['idtransaccion'] = 'ENTRABAJO';
+    $idevento                  = 'MATRA';
   } else if ( $idio == '4' ) {
     $record_p['idtransaccion'] = 'ENPAUSA';
+    $idevento                  = 'MAPAU';
   } else {
     $record_p['idtransaccion'] = 'NOTKNOWN_'.$idio;
+    $idevento                  = 'MAUKN';
   }
 
 
@@ -452,10 +460,11 @@ function publicaAcceso(&$record_p) {
 //~ Topic: savtec/sensor/gps/868789020336771
 //~ Payload[{"MSG":"GTFRI","RSP":"+RESP","ACU":1,"SPD":85.6,"AZM":123,"ALT":170.7,"LON":-71.505315,"LAT":-32.99811,"ADDRESS":"SIN DIRECCION","FECHA":"2019-02-23 17:02:20","FECHAL":"2019-02-23 14:02:20","TIME":1550941340}]
 
+
     $topic    = "savtec/sensor/gps/$idmodulo";
 
     $payload  = '{';
-    $payload .= '"MSG":"GTFRI",';
+    $payload .= '"MSG":"'.$idevento.'",';
     $payload .= '"ACU":1,';
     $payload .= '"SPD":'.$velocidad.',';
     $payload .= '"AZM":'.$rumbo.',';
