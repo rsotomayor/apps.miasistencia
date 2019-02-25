@@ -250,9 +250,9 @@ class Servicios {
 
 
     $fp = fopen('/tmp/matest.log', 'a');
-    fwrite($fp,"BEGIN ==> registrando Usuario\n");    
+    fwrite($fp,"BEGIN ==> requestEmailPassword\n");    
     fwrite($fp, print_r($record_p, TRUE));
-    fwrite($fp,"END ==> registrando Usuario\n");    
+    fwrite($fp,"END ==> requestEmailPassword\n");    
     fclose($fp);   
 
     $rutusuario = isset($record_p['rutusuario']) ? trim($record_p['rutusuario']) : NULL ;
@@ -363,6 +363,9 @@ class Servicios {
 
     $rutusuario = isset($record_p['rutusuario']) ? trim($record_p['rutusuario']) : NULL ;
     $rutempresa = isset($record_p['rutempresa']) ? trim($record_p['rutempresa']) : NULL ;
+    $nombres    = isset($record_p['nombres']) ? trim($record_p['nombres']) : NULL ;
+    $apellidos  = isset($record_p['apellidos']) ? trim($record_p['apellidos']) : NULL ;
+
     $email      = isset($record_p['email']) ? trim($record_p['email']) : NULL ;
     $password   = isset($record_p['password']) ? trim($record_p['password']) : NULL ;
 
@@ -377,6 +380,13 @@ class Servicios {
     $rutempresa = str_replace('.','',$rutempresa);
     $rutempresa = str_replace('-','',$rutempresa);
     
+
+    $rutusuario = str_replace(' ','',$rutusuario);
+    $rutusuario = str_replace(' ','',$rutusuario);
+    
+    $rutempresa = str_replace(' ','',$rutempresa);
+    $rutempresa = str_replace(' ','',$rutempresa);
+
 
     $rutusuario  = strtoupper($rutusuario);
     $rutempresa  = strtoupper($rutempresa);
@@ -410,10 +420,19 @@ class Servicios {
       $description  = 'Usuario Registrado|';
 
       if ( $usuario_r != NULL ) {
-        $usuario_r['apellidos']  = $usuario_r['nombres'] = $rutusuario ;
         $description            .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
         $description            .= 'Rut Empresa Usuario: '.$usuario_r['idorganizacion'].'|';
       } else {
+        $usuario_r['apellidos']      = $apellidos ;
+        $usuario_r['nombres']        = $nombres ;
+        $usuario_r['email']          = $email ;        
+        $usuario_r['idorganizacion'] = $rutempresa ;
+        $usuario_r['rut']            = $rutusuario ;
+                
+        $description            .= 'Nombre: '.$usuario_r['apellidos'].','.$usuario_r['nombres'].'|';
+        $description            .= 'Rut Empresa Usuario: '.$usuario_r['idorganizacion'].'|';        
+
+
         $description .= 'RUT: '.$rutusuario.'|';
       }
 
@@ -427,6 +446,8 @@ class Servicios {
         $description .= 'Telefono: '.$organizacion_r['telefono']."|";
         $description .= 'Email Empresa: '.$organizacion_r['email'];
       } else {
+        $organizacion_r['rut']       = $rutempresa ;
+        $organizacion_r['idcliente'] = 'ma' ;       
         $description .= '================== EMPRESA ==================|';
         $description .= 'Rut Empresa: '.$rutempresa."|";
       }
