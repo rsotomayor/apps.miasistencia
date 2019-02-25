@@ -169,6 +169,7 @@ function validaRut($str_p) {
 
     
 function actualizaModulo(&$record_p) {
+  // STM TO WORK HERE
   global $link_g;
   
   $idmodulo         = $record_p['idmodulo'];
