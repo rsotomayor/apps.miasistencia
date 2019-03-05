@@ -20,6 +20,20 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+define('IV_SIZE', mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+
+function my_decrypt ($key, $garble) {
+  //~ $combo = base64_decode($garble);
+  //~ $iv = substr($combo, 0, IV_SIZE);
+  //~ $crypt = substr($combo, IV_SIZE, strlen($combo));
+  //~ $payload = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $crypt, MCRYPT_MODE_CBC, $iv);
+
+  $payload = base64_decode($garble);
+  
+  return $payload;
+}
+
+
 class Servicios {
   var $link_a ;
   var $id_a ;
@@ -454,10 +468,13 @@ class Servicios {
 
 
       if ( $usuario_r != NULL && $organizacion_r != NULL ) {
-        $myparam['idmodulo']         = $idmodulo ;
+        $myparam['idmodulo']         = $idmovil ;
         $myparam['idcliente']        = $organizacion_r['idcliente'] ;
         $myparam['fechahora']        = strftime('%Y-%m-%d %H:%M:%S',time());
         $myparam['rutusuario']       = $usuario_r['rut'];
+        $myparam['apellidos']        = $usuario_r['apellidos'];
+        $myparam['nombres']          = $usuario_r['nombres'];
+
         $myparam['rutorganizacion']  = $organizacion_r['rut'];
         $myparam['email']            = $usuario_r['email'] ;
 
@@ -465,6 +482,8 @@ class Servicios {
         if ( actualizaModulo($myparam) != 0 ) {
           $response     = "KO.ACTMODULO";
           $description  = $myparam['msg']; 
+        } else {
+          enviaCorreoActivacion($myparam); 
         }
         
         
@@ -551,6 +570,61 @@ class Servicios {
 
   }
 
+
+  function activaRegistro($record_p) {
+    require_once ("registraevento.php");
+        
+    $response     = "OK";
+    $description  = NULL;
+    
+    $ciphertext_base64 = $record_p['pkey'];;
+    //~ $ciphertext_dec = base64_decode($ciphertext_base64);
+
+    $plaintext_dec = my_decrypt("secret-key-is-se",$ciphertext_base64);
+
+    //~ $key = pack('H*', "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3");
+    //~ $key_size =  strlen($key);    
+    //~ $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    //~ $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+
+    //~ # recupera la IV, iv_size debería crearse usando mcrypt_get_iv_size()
+    //~ $iv_dec = substr($ciphertext_dec, 0, $iv_size);
+    
+    //~ # recupera el texto cifrado (todo excepto el $iv_size en el frente)
+    //~ $ciphertext_dec = substr($ciphertext_dec, $iv_size);
+
+    //~ # podrían eliminarse los caracteres con valor 00h del final del texto puro
+    //~ $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key,$ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+    
+    
+    $dummy        = explode('_',$plaintext_dec);
+    
+    $rutusuario   = isset($dummy[0]) ? $dummy[0] : NULL ;
+    $idmodulo     = isset($dummy[1]) ? $dummy[1] : NULL ;
+    $fechahora    = isset($dummy[2]) ? $dummy[2] : NULL ;
+    
+    $myparam['rutusuario']  = $rutusuario ;
+    $myparam['idmodulo']    = $idmodulo ;
+    $myparam['fechahora']   = $fechahora ;
+    
+    $retval = activaUsuario($myparam);
+
+    $description  = $retval;
+    
+    
+    $xml  = '<?xml version="1.0"?>';
+    $xml .= '<result>';
+    $xml .= '<response>'.$response.'</response>';  
+    $xml .= '<rutusuario>'.$rutusuario.'</rutusuario>';  
+    $xml .= '<idmodulo>'.$idmodulo.'</idmodulo>';  
+    $xml .= '<fechahora>'.$fechahora.'</fechahora>';  
+
+    $xml .= '<description>'.$description.'</description>';  
+    $xml .= '</result>';    
+
+    return $xml;  
+
+  }
 
   function registraMarca($record_p) {
     require_once ("registraevento.php");

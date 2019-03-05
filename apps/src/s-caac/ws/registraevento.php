@@ -18,6 +18,30 @@ if ( $wsname == NULL ) {
   $link_g  = $dbconn_g->getConnection();
 }
 
+function stripBindVars(&$binVars_p)  {
+  if ( is_array($binVars_p) ) {
+    foreach ( $binVars_p as $key => $value ) {
+      $value = strip_tags($value);
+      $binVars_p[$key] = $value ;
+    }      
+  }    
+}
+
+
+
+function my_encrypt ($key, $payload) {
+  //~ $iv = mcrypt_create_iv(IV_SIZE, MCRYPT_DEV_URANDOM);
+  //~ $crypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $payload, MCRYPT_MODE_CBC, $iv);
+  //~ $combo = $iv . $crypt;
+  //~ $garble = base64_encode($iv . $crypt);
+
+
+  $garble = base64_encode($payload);
+  
+  return $garble;
+}
+
+  
 
 function enviaMail($usuarios_p,$subject_p,$mailBody_p,$issmtp_p=false) {
 
@@ -167,6 +191,166 @@ function validaRut($str_p) {
 }
 
 
+function enviaCorreoActivacion($parametros_p) {
+  //~ require_once ("/u/savtec/public_html/cscweb/phpMailer/class.phpmailer.php");  
+  require_once ("/u/savtec/public_html/cscweb/phpMailer/PHPMailerAutoload.php");  
+  
+    
+  
+  $idmodulo         = $parametros_p['idmodulo'];
+  $idcliente        = $parametros_p['idcliente'];
+  $fechahora        = $parametros_p['fechahora'];
+  $rutusuario       = $parametros_p['rutusuario'];
+  $nombres          = $parametros_p['nombres'];
+  $apellidos        = $parametros_p['apellidos'];    
+  $rutorganizacion  = $parametros_p['rutorganizacion'];
+  $email            = $parametros_p['email'];  
+
+    
+  $nombre           = $nombres.' '.$apellidos;
+  
+  $NombreSistema      = "Soporte Savtec" ;
+  $EmailSistema       = "soporte.savtec@gmail.com" ;
+  
+
+  $mail           = new PHPMailer();
+  $mail->From     = $EmailSistema;
+  $mail->FromName = $NombreSistema ;
+  $mail->Subject = "[MIASISTENCIA.GPS] Activacion de aplicacion";
+  $mail->AltBody = "Para ver el mensaje, favor utilizar un lector de correo HTML compatible !"; // optional, comment out and test
+ 
+  $mail->IsSMTP();
+  $mail->SMTPAuth   = true;                  // enable SMTP authentication
+  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+  $mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+  $mail->Port       = 465;                   // set the SMTP port for the GMAIL server
+  $mail->Username   = "soporte.savtec@gmail.com";  // GMAIL username
+  $mail->Password   = "soportesavtec060968";            // GMAIL password   
+
+  $flagenviamail = true ;
+
+  if ( $flagenviamail ) {
+//      if ( $flagenviamail ) {
+//          $recipient = $email; //recipient
+//        $email = "rsotomayorb@gmail.com"; //recipient
+
+    $pkeyactivacion = $rutusuario.'_'.$idmodulo.'_'.$fechahora ;
+
+    //~ $algorithm = MCRYPT_BLOWFISH;
+    //~ $key = 'soportesavtec060968';
+    //~ $data = $pkeyactivacion;
+    //~ $mode = MCRYPT_MODE_CBC;
+    //~ $iv = mcrypt_create_iv(mcrypt_get_iv_size($algorithm, $mode),MCRYPT_DEV_URANDOM);
+    //~ $encrypted_data = $pkeyactivacion;//mcrypt_encrypt($algorithm, $key, $data, $mode, $iv);
+
+
+    //~ $key = pack('H*', "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3");
+    //~ $key_size =  strlen($key);    
+    //~ $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    //~ $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+    
+    //~ $plaintext  = $pkeyactivacion;
+    //~ $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key,$plaintext, MCRYPT_MODE_CBC, $iv);
+    //~ $ciphertext_base64 = base64_encode($ciphertext);    
+
+    //~ $ciphertext_base64 = base64_encode($pkeyactivacion);
+
+    $ciphertext_base64 = my_encrypt('secret-key-is-se',$pkeyactivacion);
+    
+
+    $mail_body  = "Estimado $nombre,<br /><br />";
+    $mail_body .= 'Para activar aplicacion debe hacer <a href="http://apps.miasistencia.cl/apps/src/s-caac/ws/wscaac.php?wsname=activaRegistro&pkey='.$ciphertext_base64.'">click aqui</a><br />';
+    $mail_body .= "<br /><br />";
+    $mail_body .= "Atentos saludos<br />";
+    $mail_body .= "MiAsistencia - GPS";
+    
+
+    $mail->MsgHTML($mail_body);
+    $mail->ClearAllRecipients() ;
+    $mail->AddAddress($email,$nombre); 
+    
+    //~ $usuarioscopiados_r = $this->getArrayUsuariosCopiados($idusuario);
+    
+    //~ if ( isset($usuarioscopiados_r) ) {
+      //~ foreach ( $usuarioscopiados_r as $key => $usuarioscopiados_r ) {
+        //~ $emailcopia  = $usuarioscopiados_r["email"];
+        //~ $nombrecopia = $usuarioscopiados_r["nombre"];
+        //~ $mail->AddCC($emailcopia,$nombrecopia);     
+      //~ }
+    //~ }
+//        $mail->AddBCC("rsotomayorb@gmail.com","Rafael Sotomayor");     
+
+
+    if(!$mail->Send()) {
+      //~ echo 'Failed to send mail ....\n';
+    } else {
+      //~ echo "Mail enviado a $idusuario <$email> \n"   ;
+    }
+/*
+    echo "Mail enviado a $idusuario <$email> \n"   ;
+            
+    $flagenviamail = true ; 
+*/
+  }
+
+
+}
+    
+function activaUsuario($parametros_p) {
+  global $link_g;
+    
+  $rutusuario = $parametros_p['rutusuario']  ;
+  $idmodulo   = $parametros_p['idmodulo']    ;
+  $fechahora  = $parametros_p['fechahora']   ;
+  
+  $tname     = "ma_db.sac_maregistro";
+
+  $sqlString = "SELECT * FROM $tname
+                WHERE
+                rutusuario    = ?
+                AND idmodulo  = ? 
+                AND fechahora = ?
+                LIMIT 1 
+              ";
+
+  $bindVars[] = $rutusuario ;
+  $bindVars[] = $idmodulo ;
+  $bindVars[] = $fechahora ;
+
+  if ( !isset($bindVars) ) {
+    $bindVars = NULL;
+  } else {
+    stripBindVars($bindVars);
+  }
+
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+  $rs = $link_g->Execute($sqlString,$bindVars);
+  
+
+  
+  if ( $rs->RecordCount() == 1 ) {
+    
+    $sqlString = "UPDATE $tname SET estado=1
+                  WHERE
+                  rutusuario    = ?
+                  AND idmodulo  = ? 
+                  AND fechahora = ?
+                ";
+
+    $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+    $rs = $link_g->Execute($sqlString,$bindVars);
+
+    $retval = "ACTIVA OK";
+
+  } else {
+    $retval = "ACTIVA ERROR";
+  }
+  
+  return $retval ;
+
+    
+}
+
     
 function actualizaModulo(&$record_p) {
   // STM TO WORK HERE
@@ -176,10 +360,12 @@ function actualizaModulo(&$record_p) {
   $idcliente        = $record_p['idcliente'];
   $fechahora        = $record_p['fechahora'];
   $rutusuario       = $record_p['rutusuario'];
+  $nombres          = $record_p['nombres'];
+  $apellidos        = $record_p['apellidos'];    
   $rutorganizacion  = $record_p['rutorganizacion'];
   $email            = $record_p['email'];
 
-  
+/*  
   $tname = 'apps_db.sac_modulos' ;  
 
   try {
@@ -212,6 +398,60 @@ function actualizaModulo(&$record_p) {
     $record_p['msg'] = $e->msg;
     return -1;
   }
+
+*/  
+
+  $tname     = "ma_db.sac_maregistro";
+
+  $sqlString = "INSERT INTO $tname(rutusuario,idmodulo,fechahora,rutorganizacion,email,nombres,apellidos,dbname)
+                VALUES ( ?,?,?,?,?,?,?,?) ";
+
+  $idmodulo         = $record_p['idmodulo'];
+  $idcliente        = $record_p['idcliente'];
+  $fechahora        = $record_p['fechahora'];
+  $rutusuario       = $record_p['rutusuario'];
+  $rutorganizacion  = $record_p['rutorganizacion'];
+  $email            = $record_p['email'];
+  $dbname           = $record_p['idcliente'].'_db';;
+  
+
+  $bindVars[] = $rutusuario ;
+  $bindVars[] = $idmodulo ;
+  $bindVars[] = $fechahora ;
+  $bindVars[] = $rutorganizacion ;
+  $bindVars[] = $email ;
+  $bindVars[] = $nombres ;
+  $bindVars[] = $apellidos ;
+  $bindVars[] = $dbname ;  
+  
+
+
+  if ( !isset($bindVars) ) {
+    $bindVars = NULL;
+  } else {
+    stripBindVars($bindVars);
+  }
+
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+  $rs = $link_g->Execute($sqlString,$bindVars);
+
+
+  $record_p['msg'] = 'OK';
+  
+//~ CREATE TABLE ma_db.`sac_maregistro` (
+  //~ `rutusuario` varchar(45) DEFAULT NULL,
+  //~ `idmodulo` varchar(45) NOT NULL DEFAULT '',
+  //~ `fechahora` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  //~ `rutorganizacion` varchar(45) DEFAULT NULL,
+  //~ `email` varchar(255) DEFAULT NULL,
+  //~ `nombres` varchar(255) DEFAULT NULL,
+  //~ `apellidos` varchar(255) DEFAULT NULL,
+  //~ `estado` varchar(45) DEFAULT NULL,
+  //~ PRIMARY KEY (`rutusuario`,`idmodulo`,`fechahora`)
+//~ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  
+  
   
   return 0;
 
@@ -270,6 +510,40 @@ function getRegistroOrganizacion($idorganizacion_p) {
 
   $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
   $rs = $link_g->Execute($sqlString);
+
+  return $rs->fields ;
+
+}
+
+
+function getRegistroUsuarioRegistroByRut($idcliente_p,$idusuario_p) {
+  global $link_g;
+  
+  $dbname      = $idcliente_p.'_db' ;
+  $idusuario_p = strtoupper(str_replace("-","",$idusuario_p));  
+  
+  $sqlString  = "SELECT
+        * 
+      FROM
+        $dbname.sac_maregistro
+      WHERE 
+      UPPER(REPLACE(rutusuario,'-','')) = '$idusuario_p' 
+      AND dbname = '$dbname' 
+      ORDER BY fechahora DESC
+      LIMIT 1 " ;
+      
+      
+  $link_g->SetFetchMode(ADODB_FETCH_ASSOC); 
+
+  try {
+    $rs = $link_g->Execute($sqlString);
+  } catch (exception $e) { 
+    //~ echo "Error: , ".$e->msg."<br>";
+    return NULL;
+  } 
+
+
+  
 
   return $rs->fields ;
 
@@ -490,10 +764,6 @@ function publicaAcceso(&$record_p) {
 
 
 }
-
-
-
-
 
 
 function registraAcceso(&$record_p) {
@@ -1088,6 +1358,22 @@ function registraEventoMarca(&$record_p) {
     $record_p ['ticket']    .= 'Hora Telefono: '.$fechahora.'|' ;    
 
 
+    $usuario_r = getRegistroUsuarioRegistroByRut($idcliente,$rutusuario);
+    
+    if ( $usuario_r == NULL ) {
+      $idtransaccion  = $record['idtransaccion']; 
+      $record_p ['ticket']    = 'USR DESCONOCIDO '.$idtransaccion.' OK';
+    } else {
+      if ( $usuario_r['estado'] == 1 ) {
+        $idtransaccion  = $record['idtransaccion']; 
+        $record_p ['ticket']    = 'REGISTRO '.$idtransaccion.' OK';
+      } else {
+        $idtransaccion  = $record['idtransaccion']; 
+        $record_p ['ticket']    = 'USR SIN VALIDAR '.$idtransaccion.' OK';
+      }
+    }
+
+
     //~ $usuarios_r[] = array(
                     //~ "idusuario" => $usuario_r['rut'] ,
                     //~ "to"        => "to" ,
@@ -1105,11 +1391,14 @@ function registraEventoMarca(&$record_p) {
       //~ enviaMail($usuarios_r,$subject,$mailBody);
     //~ }
 
-    $record_p ['ticket']    = 'REGISTRO '.$record['idtransaccion'].' OK';
+
+
+
+
 
   }
     
-  return $retval;;
+  return $retval;
 }
 
 
