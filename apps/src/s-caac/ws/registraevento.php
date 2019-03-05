@@ -735,6 +735,7 @@ function publicaAcceso(&$record_p) {
 //~ Topic: savtec/sensor/gps/868789020336771
 //~ Payload[{"MSG":"GTFRI","RSP":"+RESP","ACU":1,"SPD":85.6,"AZM":123,"ALT":170.7,"LON":-71.505315,"LAT":-32.99811,"ADDRESS":"SIN DIRECCION","FECHA":"2019-02-23 17:02:20","FECHAL":"2019-02-23 14:02:20","TIME":1550941340}]
 
+    $velocidad = $velocidad*3.6;
 
     $topic    = "savtec/sensor/gps/$idmodulo";
 
